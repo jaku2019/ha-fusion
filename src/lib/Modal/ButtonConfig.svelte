@@ -389,6 +389,26 @@
 			</button>
 		</div>
 
+		<h2>Layout</h2>
+
+		<div class="button-container">
+			<button
+				class:selected={!sel?.layout || sel?.layout === 'square'}
+				on:click={() => set('layout', 'square')}
+				use:Ripple={$ripple}
+			>
+				Square
+			</button>
+
+			<button
+				class:selected={sel?.layout === 'rectangular'}
+				on:click={() => set('layout', 'rectangular')}
+				use:Ripple={$ripple}
+			>
+				Rectangular
+			</button>
+		</div>
+
 		{#if getDomain(entity_id) === 'media_player'}
 			<h2>Marquee</h2>
 

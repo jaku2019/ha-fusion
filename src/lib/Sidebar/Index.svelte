@@ -17,6 +17,7 @@
 	let mountedComponents = false;
 
 	let Bar: ComponentType;
+	let BinarySensor: ComponentType;
 	let Camera: ComponentType;
 	let Configure: ComponentType;
 	let Date: ComponentType;
@@ -37,6 +38,7 @@
 
 	const imports = {
 		bar: () => import('$lib/Sidebar/Bar.svelte').then((c) => (Bar = c.default)),
+		binary_sensor: () => import('$lib/Sidebar/BinarySensor.svelte').then((c) => (BinarySensor = c.default)),
 		camera: () => import('$lib/Sidebar/Camera.svelte').then((c) => (Camera = c.default)),
 		configure: () => import('$lib/Sidebar/Configure.svelte').then((c) => (Configure = c.default)),
 		date: () => import('$lib/Sidebar/Date.svelte').then((c) => (Date = c.default)),
@@ -121,6 +123,8 @@
 				openModal(() => import('$lib/Modal/NotificationsConfig.svelte'), { sel });
 			} else if (sel?.type === 'radial') {
 				openModal(() => import('$lib/Modal/RadialConfig.svelte'), { sel });
+			} else if (sel?.type === 'binary_sensor') {
+				openModal(() => import('$lib/Modal/BinarySensorConfig.svelte'), { sel });
 			} else if (sel?.type === 'sensor') {
 				openModal(() => import('$lib/Modal/SensorConfig.svelte'), { sel });
 			} else if (sel?.type === 'template') {
@@ -370,6 +374,21 @@
 							/>
 						</div>
 
+						<!-- BINARY SENSOR -->
+					{:else if BinarySensor && item?.type === 'binary_sensor' && !hide_mobile}
+						<div on:click={() => handleClick(item?.id)} on:keydown role="button" tabindex="0">
+							<svelte:component
+								this={BinarySensor}
+								entity_id={item?.entity_id}
+								prefix={item?.prefix}
+								suffix={item?.suffix}
+								icon_on={item?.icon_on}
+								icon_off={item?.icon_off}
+								on_value={item?.on_value}
+								off_value={item?.off_value}
+							/>
+						</div>
+
 						<!-- SENSOR -->
 					{:else if Sensor && item?.type === 'sensor' && !hide_mobile}
 						<div on:click={() => handleClick(item?.id)} on:keydown role="button" tabindex="0">
@@ -432,8 +451,23 @@
 		grid-area: aside;
 		padding: var(--theme-sidebar-padding);
 		padding-bottom: 1.4rem !important;
-		background-color: var(--theme-colors-sidebar-background);
-		border-right: var(--theme-colors-sidebar-border);
+		
+		/* Enhanced background with glassmorphism */
+		background: var(--theme-colors-sidebar-background, var(--color-surface-elevated));
+		backdrop-filter: blur(var(--blur-md));
+		-webkit-backdrop-filter: blur(var(--blur-md));
+		
+		/* Modern border with better opacity */
+		border-right: var(--theme-colors-sidebar-border, 1px solid var(--color-border-subtle));
+		
+		/* Enhanced shadows for depth */
+		box-shadow: var(--shadow-sm);
+		
+		/* Smooth transitions */
+		transition: 
+			background-color var(--transition-medium),
+			border-color var(--transition-medium),
+			box-shadow var(--transition-medium);
 	}
 
 	div {
@@ -450,18 +484,95 @@
 		cursor: inherit;
 		font-size: inherit;
 		width: 100%;
+		
+		/* Enhanced button styling */
+		border-radius: var(--radius-lg);
+		transition: var(--transition-colors);
+		position: relative;
+		overflow: hidden;
+	}
+	
+	/* Modern hover effects for sidebar buttons */
+	button:hover {
+		background: var(--color-glass-light);
+		backdrop-filter: blur(var(--blur-sm));
+		-webkit-backdrop-filter: blur(var(--blur-sm));
+	}
+	
+	/* Focus states for accessibility */
+	button:focus-visible {
+		outline: none;
+		box-shadow: 0 0 0 2px var(--color-primary-hover);
 	}
 
 	section {
 		margin-top: 1rem;
 		height: calc(100% - 1rem);
-		font-size: var(--theme-sidebar-font-size);
+		font-size: var(--theme-sidebar-font-size, var(--text-base));
 		display: flex;
 		flex-direction: column;
+		gap: var(--space-2);
 	}
 
 	.sidebar_edit_mode {
-		transition: height 200ms ease;
+		transition: 
+			height var(--transition-medium),
+			opacity var(--transition-medium),
+			transform var(--transition-medium);
 		display: flex;
+		border-radius: var(--radius-lg);
+	}
+	
+	/* Enhanced edit mode styling */
+	.sidebar_edit_mode:hover {
+		transform: translateX(2px);
+	}
+	
+	/* Modern scrollbar for sidebar content */
+	section {
+		scrollbar-width: thin;
+		scrollbar-color: var(--color-border-strong) transparent;
+	}
+	
+	section::-webkit-scrollbar {
+		width: 6px;
+	}
+	
+	section::-webkit-scrollbar-track {
+		background: transparent;
+	}
+	
+	section::-webkit-scrollbar-thumb {
+		background-color: var(--color-border-strong);
+		border-radius: var(--radius-full);
+	}
+	
+	section::-webkit-scrollbar-thumb:hover {
+		background-color: var(--color-border-interactive);
+	}
+	
+	/* Mobile responsiveness enhancements */
+	@media (max-width: 768px) {
+		aside {
+			padding: var(--space-4);
+			box-shadow: var(--shadow-lg);
+		}
+		
+		.sidebar_edit_mode:hover {
+			transform: none; /* Disable transform on mobile for better performance */
+		}
+	}
+	
+	/* Reduced motion accessibility */
+	@media (prefers-reduced-motion: reduce) {
+		aside,
+		button,
+		.sidebar_edit_mode {
+			transition: none;
+		}
+		
+		.sidebar_edit_mode:hover {
+			transform: none;
+		}
 	}
 </style>

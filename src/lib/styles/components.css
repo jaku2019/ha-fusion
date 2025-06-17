@@ -1,0 +1,416 @@
+/**
+ * Modern Component Base Styles for HA-Fusion
+ * Core component styling with modern aesthetics
+ */
+
+/* =============================================================================
+ * MODERN CARD COMPONENT
+ * ============================================================================= */
+
+.modern-card {
+  background: var(--card-background);
+  border: var(--card-border);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  padding: var(--card-padding);
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition-all);
+}
+
+.modern-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--gradient-surface);
+  z-index: -1;
+}
+
+.modern-card:hover {
+  box-shadow: var(--shadow-xl);
+  transform: translateY(-2px);
+}
+
+/* Glass Card Variant */
+.modern-card--glass {
+  background: var(--color-glass-light);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--color-glass-medium);
+  box-shadow: var(--shadow-glass);
+}
+
+.modern-card--glass::before {
+  background: var(--gradient-glass);
+}
+
+/* Card Content Areas */
+.modern-card__header {
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.modern-card__title {
+  font-size: var(--text-xl);
+  font-weight: var(--font-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: var(--leading-tight);
+}
+
+.modern-card__subtitle {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  margin: var(--space-1) 0 0 0;
+  line-height: var(--leading-normal);
+}
+
+.modern-card__content {
+  color: var(--color-text-primary);
+  line-height: var(--leading-normal);
+}
+
+.modern-card__footer {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border-subtle);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* =============================================================================
+ * MODERN BUTTON SYSTEM
+ * ============================================================================= */
+
+.modern-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--button-padding-y) var(--button-padding-x);
+  border: none;
+  border-radius: var(--button-radius);
+  font-family: inherit;
+  font-size: var(--text-base);
+  font-weight: var(--button-font-weight);
+  line-height: var(--leading-none);
+  text-decoration: none;
+  cursor: pointer;
+  transition: var(--button-transition);
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+}
+
+.modern-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Button Variants */
+.modern-button--primary {
+  background: var(--gradient-primary);
+  color: var(--color-white);
+  box-shadow: var(--shadow-sm);
+}
+
+.modern-button--primary:hover:not(:disabled) {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.modern-button--secondary {
+  background: var(--color-surface-elevated-2);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.modern-button--secondary:hover:not(:disabled) {
+  background: var(--color-surface-elevated-3);
+  box-shadow: var(--shadow-md);
+}
+
+.modern-button--ghost {
+  background: transparent;
+  color: var(--color-text-primary);
+}
+
+.modern-button--ghost:hover:not(:disabled) {
+  background: var(--color-glass-light);
+}
+
+.modern-button--glass {
+  background: var(--color-glass-light);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--color-glass-medium);
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-glass);
+}
+
+.modern-button--glass:hover:not(:disabled) {
+  background: var(--color-glass-medium);
+  box-shadow: var(--shadow-elevated);
+}
+
+/* Button Sizes */
+.modern-button--sm {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.modern-button--lg {
+  padding: var(--space-4) var(--space-6);
+  font-size: var(--text-lg);
+}
+
+/* Icon Buttons */
+.modern-button--icon {
+  padding: var(--space-3);
+  aspect-ratio: 1;
+}
+
+.modern-button--icon-sm {
+  padding: var(--space-2);
+  aspect-ratio: 1;
+}
+
+/* =============================================================================
+ * MODERN INPUT SYSTEM
+ * ============================================================================= */
+
+.modern-input {
+  width: 100%;
+  padding: var(--input-padding-y) var(--input-padding-x);
+  background: var(--input-background);
+  border: var(--input-border);
+  border-radius: var(--input-radius);
+  color: var(--color-text-primary);
+  font-family: inherit;
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  transition: var(--input-transition);
+}
+
+.modern-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-hover);
+}
+
+.modern-input::placeholder {
+  color: var(--color-text-tertiary);
+}
+
+.modern-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Input Group */
+.modern-input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.modern-input-group__icon {
+  position: absolute;
+  left: var(--space-3);
+  color: var(--color-text-tertiary);
+  pointer-events: none;
+}
+
+.modern-input-group__input {
+  padding-left: var(--space-10);
+}
+
+/* =============================================================================
+ * MODERN MODAL SYSTEM
+ * ============================================================================= */
+
+.modern-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--modal-backdrop);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-modal);
+  padding: var(--space-4);
+}
+
+.modern-modal {
+  background: var(--modal-background);
+  border: var(--modal-border);
+  border-radius: var(--modal-radius);
+  box-shadow: var(--modal-shadow);
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.modern-modal__header {
+  padding: var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modern-modal__title {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.modern-modal__close {
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  transition: var(--transition-colors);
+}
+
+.modern-modal__close:hover {
+  background: var(--color-glass-light);
+  color: var(--color-text-primary);
+}
+
+.modern-modal__content {
+  padding: var(--space-6);
+  overflow-y: auto;
+}
+
+.modern-modal__footer {
+  padding: var(--space-6);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  gap: var(--space-3);
+  justify-content: flex-end;
+}
+
+/* =============================================================================
+ * LAYOUT UTILITIES
+ * ============================================================================= */
+
+.modern-grid {
+  display: grid;
+  gap: var(--gap-md);
+}
+
+.modern-grid--sm {
+  gap: var(--gap-sm);
+}
+
+.modern-grid--lg {
+  gap: var(--gap-lg);
+}
+
+.modern-flex {
+  display: flex;
+  gap: var(--gap-md);
+}
+
+.modern-flex--center {
+  align-items: center;
+  justify-content: center;
+}
+
+.modern-flex--between {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modern-flex--col {
+  flex-direction: column;
+}
+
+/* =============================================================================
+ * MODERN SIDEBAR COMPONENT
+ * ============================================================================= */
+
+.modern-sidebar {
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  height: 100vh;
+  overflow-y: auto;
+  padding: var(--space-6);
+}
+
+.modern-sidebar__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-primary);
+  text-decoration: none;
+  transition: var(--transition-colors);
+  margin-bottom: var(--space-2);
+}
+
+.modern-sidebar__item:hover {
+  background: var(--color-glass-light);
+}
+
+.modern-sidebar__item--active {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+.modern-sidebar__icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  opacity: 0.8;
+}
+
+.modern-sidebar__text {
+  font-weight: var(--font-medium);
+}
+
+/* =============================================================================
+ * RESPONSIVE UTILITIES
+ * ============================================================================= */
+
+@media (max-width: 768px) {
+  .modern-card {
+    padding: var(--space-4);
+  }
+  
+  .modern-modal {
+    margin: var(--space-4);
+    max-width: calc(100vw - var(--space-8));
+  }
+  
+  .modern-modal__header,
+  .modern-modal__content,
+  .modern-modal__footer {
+    padding: var(--space-4);
+  }
+}
+
+/* =============================================================================
+ * ACCESSIBILITY IMPROVEMENTS
+ * ============================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

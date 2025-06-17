@@ -273,6 +273,7 @@
 	"seconds": "Seconds",
 	"section": "Section",
 	"sensor": "Sensor",
+	"binary_sensor": "Binary Sensor",
 	"service": "Service",
 	"set_state": "Set state",
 	"set_white": "Set white",

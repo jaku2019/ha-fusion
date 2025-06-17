@@ -1,0 +1,7 @@
+{
+	"hours": "Hours",
+	"stroke_color": "Line Color", 
+	"fill_color": "Fill Color",
+	"graph": "Graph",
+	"display_entity_history": "Display entity history as a line graph"
+}

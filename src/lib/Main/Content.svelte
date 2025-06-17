@@ -6,6 +6,7 @@
 	import Camera from '$lib/Main/Camera.svelte';
 	import Configure from '$lib/Main/Configure.svelte';
 	import Empty from '$lib/Main/Empty.svelte';
+	import Graph from '$lib/Dashboard/Graph.svelte';
 
 	export let item: any;
 	export let sectionName: string | undefined = undefined;
@@ -27,6 +28,11 @@
 	<PictureElements sel={item} />
 {:else if item?.type === 'camera'}
 	<Camera sel={item} responsive={false} muted={true} controls={false} />
+{:else if item?.type === 'graph'}
+	<Graph 
+		sel={item}
+		{sectionName}
+	/>
 {:else if item?.type === 'empty'}
 	<Empty sel={item} />
 {:else}

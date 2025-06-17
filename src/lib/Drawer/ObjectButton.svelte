@@ -13,17 +13,20 @@
 		!view ||
 		!view.sections ||
 		view.sections.length === 0 ||
-		checkForHorizontalStackOnly(view.sections);
+		!hasValidSection(view.sections);
 
-	function checkForHorizontalStackOnly(sections: any[]): boolean {
-		return sections.every((section) => {
-			// section is a horizontal-stack
-			if (section.type === 'horizontal-stack') {
-				return section.sections ? checkForHorizontalStackOnly(section.sections) : true;
+	function hasValidSection(sections: any[]): boolean {
+		for (const section of sections) {
+			// If it's not a horizontal-stack, it's a valid section for items
+			if (section.type !== 'horizontal-stack') {
+				return true;
 			}
-			// section is not a horizontal-stack
-			return false;
-		});
+			// If it's a horizontal-stack, check nested sections
+			if (section.sections && hasValidSection(section.sections)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -35,7 +38,12 @@
 
 		const section = findSection(view.sections);
 
-		if (!section?.items) return;
+		if (!section) return;
+
+		// Ensure the section has an items array
+		if (!section.items) {
+			section.items = [];
+		}
 
 		section.items.unshift({
 			type: 'configure',

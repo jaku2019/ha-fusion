@@ -1,12 +1,49 @@
-# ha-fusion
+# A ha-fusion enhanced fork
 
-A modern, easy-to-use and performant custom [Home Assistant](https://www.home-assistant.io/) dashboard
+A modern, easy-to-use and performant custom [Home Assistant](https://www.home-assistant.io/) dashboard with enhanced features
 
 <https://www.youtube.com/watch?v=D8mWruSuPOM>
 
 [![preview](/static/preview.png)](https://www.youtube.com/watch?v=D8mWruSuPOM)
 
-If you find this project useful, be sure to 🌟 this repository! If you love it, please consider donating! ❤️ <https://www.paypal.com/paypalme/matt8707>
+## 🚀 Enhanced Fork
+
+This is an enhanced fork of the original [ha-fusion](https://github.com/matt8707/ha-fusion) project by matt8707, featuring additional components and improvements:
+
+### ✨ New Features Added
+
+#### 📊 Graph Component Integration
+- **Dashboard Graphs**: Add interactive line charts as main dashboard items
+- **Entity Visualization**: Display sensor history with customizable time ranges (1-168 hours)
+- **Real-time Configuration**: Live color customization with stroke and fill options
+- **Responsive Design**: 2:1 aspect ratio that matches rectangular button layout
+- **Smart Sizing**: Automatically spans 2 grid columns for optimal data display
+
+#### 🔄 Enhanced Binary Sensor Component
+- **Custom Text Values**: Display meaningful text instead of "On"/"Off" (e.g., "Open"/"Closed", "Detected"/"Clear")
+- **Smart Icon Detection**: Automatic icon suggestions based on entity type (doors, motion, contact sensors)
+- **Flexible Configuration**: Separate icons for on/off states with prefix/suffix text support
+- **Intuitive Setup**: Easy configuration through dedicated modal interface
+
+### 🛠 Technical Improvements
+- **TypeScript Enhancement**: Full type safety for new components
+- **Demo Integration**: Works seamlessly with demo entities for development
+- **Configuration Flow**: Consistent patterns following existing HA-Fusion architecture
+- **Documentation**: Comprehensive implementation guides and usage examples
+
+### 📚 Documentation
+- [Graph and Binary Sensor Implementation Guide](docs/graph-and-binary-sensor-implementation.md)
+- [Modernization Progress](docs/modernization-progress.md)
+- [Recent Implementation Summary](docs/recent-implementation-summary.md)
+
+---
+
+## 🌟 Credits
+
+**Original Project**: [ha-fusion](https://github.com/matt8707/ha-fusion) by [matt8707](https://github.com/matt8707)  
+**Enhanced Fork**: [bogdanbotezatu/ha-fusion](https://github.com/bogdanbotezatu/ha-fusion)
+
+If you find the original project useful, be sure to 🌟 the [original repository](https://github.com/matt8707/ha-fusion)! If you love it, please consider donating to the original author! ❤️ <https://www.paypal.com/paypalme/matt8707>
 
 ---
 
@@ -18,23 +55,31 @@ The current state of this project is **pre-beta**. This means that there's basic
 
 ## Installation
 
-### Add-on
+### 🔧 Enhanced Fork Installation
 
-For "Operating System" or "Supervised" installation methods, you can install ha-fusion as an add-on:
-
-1. **Add Repository**: To begin, add the ha-fusion add-on repository to your Home Assistant instance. Click the button below or manually add the repository using this URL: <https://github.com/matt8707/addon-ha-fusion>.
-
-   [![Open your Home Assistant instance and show the add add-on repository dialog with a specific repository URL pre-filled.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fmatt8707%2Faddon-ha-fusion)
-
-2. **Install Add-on**: After adding the repository, refresh the add-on store page. Locate ha-fusion in the list and proceed with the installation.
-
----
+This enhanced fork can be installed using Docker. The original add-on installation method is not available for this fork.
 
 ### Docker
 
-If you're using the "Container" or "Core" installation methods, ha-fusion can be installed via Docker:
+Install this enhanced version of ha-fusion via Docker:
 
-1. **Docker Compose File**: Place your edited copy of the [docker-compose.yml](https://github.com/matt8707/ha-fusion/blob/main/docker-compose.yml) file in a suitable directory.
+1. **Docker Compose File**: Create a docker-compose.yml file using this enhanced version:
+
+   ```yaml
+   version: '3.8'
+   services:
+     ha-fusion:
+       image: ghcr.io/bogdanbotezatu/ha-fusion:latest
+       container_name: ha-fusion
+       ports:
+         - "5050:5050"
+       volumes:
+         - ./data:/app/data
+       environment:
+         - TZ=Europe/Stockholm
+         - HASS_URL=http://192.168.1.241:8123
+       restart: unless-stopped
+   ```
 
 2. **Create Container**:
    Run the following commands in your terminal to start the container:
@@ -46,19 +91,16 @@ If you're using the "Container" or "Core" installation methods, ha-fusion can be
 
 #### Update
 
-To update to the latest version of ha-fusion, run the following commands:
+To update to the latest version of this enhanced fork, run:
 
 ```bash
 docker-compose pull ha-fusion
 docker-compose up -d ha-fusion
 ```
 
-<details>
-<summary>
-   <b>Other</b>
-</summary>
+#### Manual Docker Run
 
-Without docker-compose, updating the container involves additional steps. For each update, it's necessary to first stop the current container, remove it, pull the new image, and then execute the docker run command again.
+Alternatively, you can run the container directly:
 
 ```bash
 docker run -d \
@@ -69,16 +111,47 @@ docker run -d \
   -e TZ=Europe/Stockholm \
   -e HASS_URL=http://192.168.1.241:8123 \
   --restart always \
-  ghcr.io/matt8707/ha-fusion
+  ghcr.io/bogdanbotezatu/ha-fusion:latest
 ```
 
-#### Kubernetes
+### 📦 Original Installation
 
-If you prefer to use Kubernetes, see [Chart README.md](https://github.com/matt8707/ha-fusion/tree/167c320918544416e2f9272e1edad64b7329269a/charts/ha-fusion)
+For the original ha-fusion with add-on support, visit: <https://github.com/matt8707/ha-fusion>
 
-</details>
+---
 
-...
+## 🎯 Using Enhanced Features
+
+### 📊 Graph Component
+
+1. **Add to Dashboard**: Click the "+" button in the main dashboard area
+2. **Select Graph**: Choose "Graph" from the available component options
+3. **Configure**:
+   - Select a sensor entity (temperature, energy, etc.)
+   - Set time range (1-168 hours)
+   - Customize stroke and fill colors
+   - Preview updates in real-time
+4. **Save**: Graph appears on dashboard with 2:1 aspect ratio
+
+### 🔄 Binary Sensor Component
+
+1. **Add to Sidebar**: Click the gear icon in the sidebar, then "+"
+2. **Select Binary Sensor**: Choose "Binary Sensor" from available options
+3. **Configure**:
+   - Select binary sensor entity (door, motion, contact, etc.)
+   - Set custom on/off text (e.g., "Open"/"Closed")
+   - Add prefix/suffix text if desired
+   - Choose custom icons for each state
+   - Use suggested icons based on entity type
+4. **Save**: Sidebar displays meaningful status text instead of generic "On"/"Off"
+
+#### Binary Sensor Examples
+
+| Entity Type | On Value | Off Value | Result |
+|-------------|----------|-----------|---------|
+| Door Contact | "Open" | "Closed" | Shows "Open" when door is open |
+| Motion Sensor | "Motion Detected" | "No Motion" | Clear motion status |
+| Occupancy | "Occupied" | "Empty" | Room occupancy status |
 
 ---
 
@@ -116,14 +189,14 @@ To debug any errors, check the "Log" tab if you're using the addon, or use `dock
 
 ## Develop
 
-To begin contributing to the project, you'll first need to install node. It's also recommended to install pnpm. If you're unfamiliar with Svelte, consider doing the tutorial at <https://learn.svelte.dev>
+To begin contributing to this enhanced fork, you'll first need to install node. It's also recommended to install pnpm. If you're unfamiliar with Svelte, consider doing the tutorial at <https://learn.svelte.dev>
 
 ```bash
 # prerequisites (macos)
 brew install node pnpm
 
-# install
-git clone https://github.com/matt8707/ha-fusion.git
+# install this enhanced fork
+git clone https://github.com/bogdanbotezatu/ha-fusion.git
 cd ha-fusion
 pnpm install
 
@@ -143,3 +216,46 @@ npm run check
 npm run lint
 npm run format
 ```
+
+### 🔧 Enhanced Features Development
+
+When working with the new features:
+
+#### Graph Component
+- Source: `src/lib/Dashboard/Graph.svelte`
+- Config: `src/lib/Modal/DashboardGraphConfig.svelte`
+- Integration: Added to `src/lib/Modal/MainItemConfig.svelte`
+
+#### Binary Sensor Component
+- Source: `src/lib/Sidebar/BinarySensor.svelte`
+- Config: `src/lib/Modal/BinarySensorConfig.svelte`
+- Integration: Added to `src/lib/Modal/SidebarItemConfig.svelte`
+
+#### Development Guidelines
+- Follow existing TypeScript patterns
+- Maintain consistency with current component architecture
+- Add comprehensive demo entity support
+- Include proper error handling and fallbacks
+- Update documentation for new features
+
+### 📖 Documentation
+
+See the [docs](docs/) folder for comprehensive implementation guides:
+- [Graph and Binary Sensor Implementation](docs/graph-and-binary-sensor-implementation.md)
+- [Modernization Progress](docs/modernization-progress.md)
+- [Implementation Summary](docs/recent-implementation-summary.md)
+
+---
+
+## 🤝 Contributing
+
+This fork welcomes contributions! Please ensure:
+- New features follow existing patterns
+- Components include proper TypeScript definitions
+- Demo entities are supported for development
+- Documentation is updated for significant changes
+- Code passes linting and type checking
+
+## 📄 License
+
+Same license as the original ha-fusion project. See the original repository for license details.

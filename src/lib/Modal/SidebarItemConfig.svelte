@@ -9,6 +9,7 @@
 	import {
 		getGraphEntity,
 		getSensorEntity,
+		getBinarySensorEntity,
 		getPercentageEntity,
 		getCameraEntity,
 		getTimerEntity,
@@ -18,6 +19,7 @@
 	} from '$lib/Modal/getRandomEntity';
 
 	import Bar from '$lib/Sidebar/Bar.svelte';
+	import BinarySensor from '$lib/Sidebar/BinarySensor.svelte';
 	import Sensor from '$lib/Sidebar/Sensor.svelte';
 	import Time from '$lib/Sidebar/Time.svelte';
 	import Date from '$lib/Sidebar/Date.svelte';
@@ -47,6 +49,7 @@
 	// get random preview entities
 	if (!$demo.graph) getGraphEntity($states, connection, (id) => ($demo.graph = id));
 	if (!$demo.sensor) $demo.sensor = getSensorEntity($states);
+	if (!$demo.binary_sensor) $demo.binary_sensor = getBinarySensorEntity($states);
 	if (!$demo.timer) $demo.timer = getTimerEntity($states);
 	if (!$demo.bar) $demo.bar = getPercentageEntity($states);
 	if (!$demo.radial) $demo.radial = getPercentageEntity($states);
@@ -98,6 +101,17 @@
 			component: Sensor,
 			props: {
 				entity_id: $demo.sensor
+			},
+			style: {
+				'text-align': 'center'
+			}
+		},
+		{
+			id: 'binary_sensor',
+			type: $lang('binary_sensor'),
+			component: BinarySensor,
+			props: {
+				entity_id: $demo.binary_sensor
 			},
 			style: {
 				'text-align': 'center'
@@ -267,6 +281,13 @@
 				openModal(() => import('$lib/Modal/SensorConfig.svelte'), {
 					sel,
 					demo: $demo.sensor
+				});
+				break;
+
+			case 'binary_sensor':
+				openModal(() => import('$lib/Modal/BinarySensorConfig.svelte'), {
+					sel,
+					demo: $demo.binary_sensor
 				});
 				break;
 

@@ -180,13 +180,32 @@
     `;
 	}
 
-	function itemStyles(type: string) {
+	function itemStyles(type: string, item?: any) {
 		const large = ['conditional_media', 'picture_elements', 'camera'];
+		
+		// Handle button layout
+		if (type === 'button' && item?.layout === 'rectangular') {
+			return `
+				grid-column: span 2;
+				grid-row: span 1;
+				display: ${type ? '' : 'none'};
+			`;
+		}
+		
+		// Handle graph items - make them span 2 columns like rectangular buttons
+		if (type === 'graph') {
+			return `
+				grid-column: span 2;
+				grid-row: span 1;
+				display: ${type ? '' : 'none'};
+			`;
+		}
+		
 		return `
 			grid-column: ${large.includes(type) ? 'span 2' : 'span 1'};
 			grid-row: ${large.includes(type) ? 'span 4' : 'span 1'};
 			display: ${type ? '' : 'none'};
-    `;
+		`;
 	}
 
 	/**
@@ -337,7 +356,7 @@
 										class="item"
 										animate:flip={{ duration: $motion }}
 										tabindex="-1"
-										style={itemStyles(item?.type)}
+										style={itemStyles(item?.type, item)}
 									>
 										<Content {item} sectionName={stackSection?.name} />
 									</div>
@@ -403,7 +422,7 @@
 							class="item"
 							animate:flip={{ duration: $motion }}
 							tabindex="-1"
-							style={itemStyles(item?.type)}
+							style={itemStyles(item?.type, item)}
 						>
 							<Content {item} sectionName={section?.name} />
 						</div>
@@ -438,13 +457,14 @@
 		outline-offset: 3px;
 	}
 
+	/* Button sizing and styling */
 	.items {
 		border-radius: 0.6rem;
 		outline-offset: -2px;
 		display: grid;
-		grid-template-columns: repeat(auto-fill, 14.5rem);
+		grid-template-columns: repeat(auto-fill, 10rem);
 		grid-auto-rows: min-content;
-		gap: 0.4rem;
+		gap: 1rem;
 		border-radius: 0.6rem;
 		height: 100%;
 	}

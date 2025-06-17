@@ -104,6 +104,7 @@ export const templates = writable<Template>({});
 export const demo = writable<{ [key: string]: string | undefined }>({
 	graph: undefined,
 	sensor: undefined,
+	binary_sensor: undefined,
 	timer: undefined,
 	bar: undefined,
 	radial: undefined,

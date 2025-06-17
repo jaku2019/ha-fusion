@@ -126,6 +126,35 @@
 	</button>
 </div>
 
+{#if sel?.component === 'Graph'}
+	<ConfigButtons>
+		<h4>{$lang('hours')}</h4>
+		<input
+			type="number"
+			min="1"
+			max="168"
+			bind:value={sel.config.hours}
+			on:change={updateYaml}
+		/>
+
+		<h4>{$lang('stroke_color')}</h4>
+		<input
+			type="color"
+			bind:value={sel.config.stroke_color}
+			on:change={updateYaml}
+		/>
+
+		<h4>{$lang('fill_color')}</h4>
+		<input
+			type="color"
+			bind:value={sel.config.fill_color}
+			on:change={updateYaml}
+		/>
+	</ConfigButtons>
+{:else}
+	<!-- ...existing code... -->
+{/if}
+
 <style>
 	.container {
 		display: flex;

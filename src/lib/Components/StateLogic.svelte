@@ -81,6 +81,16 @@
 	{Number(state) || $lang('unknown')}
 	{#if attributes?.unit_of_measurement}{attributes.unit_of_measurement}{/if}
 
+	<!-- Person -->
+{:else if getDomain(entity_id) === 'person'}
+	{#if state === 'home'}
+		{$lang('home')}
+	{:else if state === 'not_home'}
+		{$lang('not_home')}
+	{:else}
+		{state}
+	{/if}
+
 	<!-- Weather -->
 {:else if getDomain(entity_id) === 'weather'}
 	{$lang('weather_' + state?.replace('_', '-')) || state || $lang('unknown')}

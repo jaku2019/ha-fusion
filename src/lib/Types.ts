@@ -90,6 +90,7 @@ export interface ButtonItem {
 	more_info?: boolean;
 	service?: string;
 	state: any;
+	layout?: 'square' | 'rectangular';
 	template?: {
 		[key: string]: {
 			set_state?: string;
@@ -122,6 +123,7 @@ export interface PersistentNotification {
 }
 
 export type SidebarItem = BarItem &
+	BinarySensorItem &
 	CameraItem &
 	DateItem &
 	GraphItem &
@@ -232,6 +234,19 @@ export interface SensorItem {
 	hide_mobile?: boolean;
 }
 
+export interface BinarySensorItem {
+	type?: string;
+	id?: number;
+	entity_id?: string;
+	prefix?: string;
+	suffix?: string;
+	icon_on?: string;
+	icon_off?: string;
+	on_value?: string;
+	off_value?: string;
+	hide_mobile?: boolean;
+}
+
 export interface TemplateItem {
 	type?: string;
 	id?: number;
@@ -303,4 +318,18 @@ export interface KonvaStore {
 	mode: KonvaMode;
 	undoStack: KonvaHistory[];
 	redoStack: KonvaHistory[];
+}
+
+export interface ConfigGraph {
+	hours?: number;
+	stroke_color?: string;
+	fill_color?: string;
+}
+
+export interface DashboardGraphItem {
+	type: string;
+	id: number;
+	entity_id?: string;
+	name?: string;
+	config?: ConfigGraph;
 }

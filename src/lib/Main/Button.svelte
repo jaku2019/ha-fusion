@@ -1,5 +1,7 @@
 <script lang="ts">
 	import ComputeIcon from '$lib/Components/ComputeIcon.svelte';
+	import CircularBrightnessIndicator from '$lib/Components/CircularBrightnessIndicator.svelte';
+	import CircularTemperatureIndicator from '$lib/Components/CircularTemperatureIndicator.svelte';
 	import StateLogic from '$lib/Components/StateLogic.svelte';
 	import {
 		connection,
@@ -47,6 +49,11 @@
 	/** display loader if no state change has occurred within `$motion`ms */
 	let delayLoading: ReturnType<typeof setTimeout> | null;
 
+	// Long press functionality
+	let pressTimer: ReturnType<typeof setTimeout> | null = null;
+	let isLongPress = false;
+	const LONG_PRESS_DURATION = 500; // milliseconds
+
 	/**
 	 * Observes changes in the `last_updated` property of an entity.
 	 * When the `last_updated` property changes:
@@ -79,8 +86,8 @@
 			? `hsl(${attributes?.hs_color}%, 50%)`
 			: 'rgb(75, 166, 237)';
 
-	// icon is image if extension, e.g. test.png
-	$: image = icon?.includes('.');
+	// icon is image if extension, e.g. test.png, OR if person entity with entity_picture
+	$: image = icon?.includes('.') || (getDomain(entity_id) === 'person' && attributes?.entity_picture);
 
 	$: if (sel?.template?.set_state && template?.set_state?.output) {
 		// template
@@ -150,6 +157,52 @@
 	}
 
 	/**
+	 * Handle pointer down - start long press timer
+	 */
+	function handlePointerDown(event: PointerEvent) {
+		if ($editMode) return;
+		
+		isLongPress = false;
+		pressTimer = setTimeout(() => {
+			isLongPress = true;
+			// Provide haptic feedback if available
+			if (navigator.vibrate) {
+				navigator.vibrate(50);
+			}
+			// Open modal on long press
+			handleClickEvent();
+		}, LONG_PRESS_DURATION);
+	}
+
+	/**
+	 * Handle pointer up - execute short press action or cancel long press
+	 */
+	function handlePointerUp(event: PointerEvent) {
+		if (pressTimer) {
+			clearTimeout(pressTimer);
+			pressTimer = null;
+		}
+
+		// If it wasn't a long press, execute toggle
+		if (!isLongPress && !$editMode) {
+			toggle();
+		}
+
+		isLongPress = false;
+	}
+
+	/**
+	 * Handle pointer leave - cancel long press if pointer leaves button
+	 */
+	function handlePointerLeave() {
+		if (pressTimer) {
+			clearTimeout(pressTimer);
+			pressTimer = null;
+		}
+		isLongPress = false;
+	}
+
+	/**
 	 * Delegate to handleEvent
 	 */
 	function handlePointer() {
@@ -162,7 +215,11 @@
 	 */
 	async function handleEvent(event: any) {
 		if (event.type === 'click') {
-			await handleClickEvent();
+			// In edit mode, allow click to open config
+			if ($editMode) {
+				await handleClickEvent();
+			}
+			// In normal mode, click is handled by pointer events for long press
 		} else {
 			await handlePointerEvent();
 		}
@@ -444,18 +501,27 @@
 		}
 	}
 
-	onDestroy(() => unsubscribe?.());
+	onDestroy(() => {
+		unsubscribe?.();
+		if (pressTimer) {
+			clearTimeout(pressTimer);
+		}
+	});
 </script>
 
 <div
 	class="container"
 	bind:this={container}
 	data-state={stateOn}
+	data-layout={sel?.layout || 'square'}
 	tabindex="-1"
 	style={!$editMode ? 'cursor: pointer;' : ''}
 	style:min-height="{$itemHeight}px"
 	on:pointerenter={handlePointer}
-	on:pointerdown={handlePointer}
+	on:pointerdown={handlePointerDown}
+	on:pointerup={handlePointerUp}
+	on:pointerleave={handlePointerLeave}
+	on:click={handleEvent}
 	use:Ripple={{
 		...$ripple,
 		color: !$editMode
@@ -465,17 +531,52 @@
 			: 'rgba(0, 0, 0, 0)'
 	}}
 >
-	<!-- ICON -->
+	<!-- CIRCULAR INDICATORS -->
+	{#if stateOn && attributes?.brightness && getDomain(entity_id) === 'light'}
+		<div class="brightness-indicator">
+			<CircularBrightnessIndicator 
+				{entity_id}
+				{attributes}
+				value={Math.round((attributes.brightness / 255) * 100)}
+				size={44}
+				strokeWidth={3}
+			/>
+		</div>
+	{:else if stateOn && attributes?.current_position !== undefined && getDomain(entity_id) === 'cover'}
+		<div class="brightness-indicator">
+			<CircularBrightnessIndicator 
+				{entity_id}
+				{attributes}
+				value={attributes.current_position}
+				size={44}
+				strokeWidth={3}
+			/>
+		</div>
+	{:else if stateOn && attributes?.volume_level !== undefined && getDomain(entity_id) === 'media_player'}
+		<div class="brightness-indicator">
+			<CircularBrightnessIndicator 
+				{entity_id}
+				{attributes}
+				value={Math.round(attributes.volume_level * 100)}
+				size={44}
+				strokeWidth={3}
+			/>
+		</div>
+	{:else if getDomain(entity_id) === 'climate' && attributes?.current_temperature !== undefined}
+		<div class="brightness-indicator">
+			<CircularTemperatureIndicator 
+				{entity_id}
+				{attributes}
+				temperature={attributes.current_temperature}
+				size={44}
+				strokeWidth={3}
+			/>
+		</div>
+	{/if}
 
+	<!-- ICON -->
 	<div
-		class="left"
-		on:click|stopPropagation={(event) => {
-			if (!$editMode) {
-				toggle();
-			} else {
-				handleEvent(event);
-			}
-		}}
+		class="icon-container"
 		on:keydown
 		role="button"
 		tabindex="0"
@@ -487,16 +588,17 @@
 			style:background-color={sel?.template?.color && template?.color?.output
 				? template?.color?.output
 				: undefined}
-			style:background-image={!icon && attributes?.entity_picture
+			style:background-image={(getDomain(entity_id) === 'person' && attributes?.entity_picture) || (!icon && attributes?.entity_picture)
 				? `url(${attributes?.entity_picture})`
 				: image && icon
 					? `url(${icon})`
 					: 'none'}
 			class:image
+			class:person-avatar={getDomain(entity_id) === 'person' && attributes?.entity_picture}
 		>
 			{#if loading}
 				<img src="loader.svg" alt="loading" style="margin:0 auto" />
-			{:else if image || (!icon && attributes?.entity_picture)}
+			{:else if image || (getDomain(entity_id) === 'person' && attributes?.entity_picture) || (!icon && attributes?.entity_picture)}
 				&nbsp;
 			{:else if icon}
 				{#await loadIcon(icon)}
@@ -510,14 +612,15 @@
 					<Icon icon="ooui:help-ltr" height="none" width="100%" />
 				{/await}
 			{:else if entity_id}
-				<ComputeIcon {entity_id} />
+				<ComputeIcon {entity_id} skipEntityPicture={getDomain(entity_id) === 'person'} />
 			{:else}
 				<Icon icon="ooui:help-ltr" height="none" width="100%" />
 			{/if}
 		</div>
 	</div>
 
-	<div class="right" on:click|stopPropagation={handleEvent} on:keydown role="button" tabindex="0">
+	<!-- CONTENT -->
+	<div class="content" on:keydown role="button" tabindex="0">
 		<!-- NAME -->
 		<div class="name" data-state={stateOn}>
 			{@html (sel?.template?.name && template?.name?.output) ||
@@ -526,29 +629,17 @@
 		</div>
 
 		<!-- STATE -->
-
-		<!-- only bind clientWidth if marquee is set and use svelte-fast-dimension -->
 		<div class="state" data-state={stateOn}>
-			{#if marquee}
-				<div style="width: min-content;" bind:clientWidth={contentWidth}>
-					{#if sel?.state || (sel?.template?.state && template?.state?.output)}
-						{@html sel?.state || template?.state?.output}
-					{:else if sel?.template?.set_state && template?.set_state?.output}
-						{@html sel?.template?.set_state && $lang(template?.set_state?.output)}
-					{:else}
-						<StateLogic {entity_id} selected={sel} {contentWidth} />
-					{/if}
-				</div>
+			{#if getDomain(entity_id) === 'climate'}
+				<!-- Use StateLogic for climate entities to show hvac_action -->
+				<StateLogic {entity_id} selected={sel} />
+			{:else if sel?.state || (sel?.template?.state && template?.state?.output)}
+				{@html sel?.state || template?.state?.output}
+			{:else if sel?.template?.set_state && template?.set_state?.output}
+				{@html sel?.template?.set_state && $lang(template?.set_state?.output)}
 			{:else}
-				<div style="overflow: hidden; text-overflow: ellipsis;">
-					{#if sel?.state || (sel?.template?.state && template?.state?.output)}
-						{@html sel?.state || template?.state?.output}
-					{:else if sel?.template?.set_state && template?.set_state?.output}
-						{@html sel?.template?.set_state && $lang(template?.set_state?.output)}
-					{:else}
-						<StateLogic {entity_id} selected={sel} {contentWidth} />
-					{/if}
-				</div>
+				<!-- Use StateLogic component to handle all entity states properly -->
+				<StateLogic {entity_id} selected={sel} />
 			{/if}
 		</div>
 	</div>
@@ -556,103 +647,359 @@
 
 <style>
 	.container {
-		background-color: var(--theme-button-background-color-off);
+		/* Enhanced background with fallbacks */
+		background: var(--theme-button-background-color-off, var(--color-surface-elevated));
 		font-family: inherit;
 		width: 100%;
 		height: 100%;
 		display: grid;
-		border-radius: 0.65rem;
+		
+		/* Dynamic aspect ratio based on layout */
+		aspect-ratio: var(--button-aspect-ratio, 1);
+		
+		/* Modern border radius and visual effects */
+		border-radius: var(--radius-xl);
+		border: 1px solid var(--color-border-subtle);
+		box-shadow: var(--shadow-md);
+		
 		margin: 0;
-		grid-template-columns: min-content auto;
-		grid-auto-flow: row;
-		grid-template-areas: 'left right';
-		--container-padding: 0.72rem;
+		
+		/* Dynamic grid layout based on layout type */
+		grid-template-rows: var(--button-grid-rows, auto 1fr);
+		grid-template-columns: var(--button-grid-columns, 1fr);
+		grid-template-areas: var(--button-grid-areas, 'icon' 'content');
+		gap: var(--space-2);
+		padding: var(--space-3);
 
-		/* fix ripple */
+		/* Enhanced ripple effect support */
 		transform: translateZ(0);
 		overflow: hidden;
+		position: relative;
+		
+		/* Modern glassmorphism effect */
+		backdrop-filter: blur(var(--blur-sm));
+		-webkit-backdrop-filter: blur(var(--blur-sm));
+		
+		/* Smooth transitions */
+		transition: var(--transition-all);
+		
+		/* Subtle gradient overlay */
+		background-image: var(--gradient-surface);
+	}
+	
+	/* Square layout (default) */
+	.container:not([data-layout='rectangular']) {
+		--button-aspect-ratio: 1;
+		--button-grid-rows: auto 1fr;
+		--button-grid-columns: 1fr;
+		--button-grid-areas: 'icon' 'content';
+	}
+	
+	/* Rectangular layout */
+	.container[data-layout='rectangular'] {
+		--button-aspect-ratio: 2 / 1;
+		--button-grid-rows: 1fr;
+		--button-grid-columns: auto 1fr;
+		--button-grid-areas: 'icon content';
+	}
+	
+	/* Enhanced hover states */
+	.container:hover {
+		box-shadow: var(--shadow-xl);
+		transform: translateY(-2px);
+		border-color: var(--color-border-emphasis);
+	}
+	
+	/* Modern glass overlay effect */
+	.container::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: var(--gradient-glass);
+		opacity: 0;
+		transition: opacity var(--transition-medium);
+		pointer-events: none;
+		border-radius: inherit;
+	}
+	
+	.container:hover::before {
+		opacity: 0.5;
 	}
 
 	.image {
 		background-size: cover;
 		background-repeat: no-repeat;
+		background-position: center center;
+	}
+	
+	/* Specific styling for person entity avatars to ensure faces are visible */
+	.person-avatar {
+		background-size: cover !important;
+		background-position: center 30% !important; /* Focus on upper area where face usually is */
+		border-radius: 50% !important; /* Make avatars circular */
+		padding: 0 !important; /* Remove padding for full avatar display */
+	}
+	
+	/* Preserve circular avatar styling even when active */
+	.icon[data-state='true'].person-avatar {
+		background: transparent;
+		border-color: var(--color-border-subtle);
+		border-radius: 50% !important;
+		padding: 0 !important;
 	}
 
-	.left {
-		display: inherit;
-		padding: var(--container-padding);
+	/* Brightness indicator in top-right corner */
+	.brightness-indicator {
+		position: absolute;
+		top: var(--space-2);
+		right: var(--space-2);
+		z-index: 3;
+		
+		/* Prevent interference with button interactions */
+		pointer-events: auto;
 	}
 
-	.right {
+	/* Icon container positioned at top-left */
+	.icon-container {
+		grid-area: icon;
+		justify-self: start;
+		align-self: start;
+		position: relative;
+		z-index: 2;
+	}
+	
+	/* Rectangular layout icon adjustments */
+	.container[data-layout='rectangular'] .icon-container {
+		align-self: center;
+	}
+	
+	/* Ensure icon size is optimized for rectangular layout */
+	.container[data-layout='rectangular'] .icon {
+		--icon-size: 2.5rem;
+	}
+
+	/* Content area with larger text */
+	.content {
+		grid-area: content;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		overflow: hidden;
-		padding-right: var(--container-padding);
+		gap: var(--space-1);
+		position: relative;
+		z-index: 2;
+		min-height: 0; /* Allow content to shrink */
+	}
+	
+	/* Rectangular layout content adjustments */
+	.container[data-layout='rectangular'] .content {
+		justify-content: center;
+		align-items: flex-start;
+		padding-left: var(--space-2);
+		text-align: left;
+	}
+	
+	/* Improve text spacing for rectangular layout */
+	.container[data-layout='rectangular'] .name {
+		font-size: 1.1rem;
+		font-weight: 500;
+		line-height: 1.2;
+	}
+	
+	.container[data-layout='rectangular'] .state {
+		font-size: 0.95rem;
+		opacity: 0.85;
 	}
 
 	.icon {
-		--icon-size: 2.4rem;
-		grid-area: icon;
+		--icon-size: 3rem;
 		height: var(--icon-size);
 		width: var(--icon-size);
-		color: rgb(200 200 200);
-		background-color: rgba(0, 0, 0, 0.25);
-		border-radius: 50%;
-		display: grid;
-		align-items: center;
+		color: var(--icon-color);
+		
+		/* Enhanced icon background */
+		background: var(--color-surface);
+		border: 1px solid var(--color-border-subtle);
+		box-shadow: var(--shadow-sm);
+		
+		border-radius: var(--radius-lg);
 		display: flex;
+		align-items: center;
+		justify-content: center;
 		padding: 0.5rem;
 		background-position: center center;
 		background-size: cover;
 		background-repeat: no-repeat;
+		
+		/* Glass effect for icon */
+		backdrop-filter: blur(8px);
+		-webkit-backdrop-filter: blur(8px);
+		
+		/* Smooth transitions */
+		transition: var(--transition-all);
+		position: relative;
+		z-index: 1;
+		
+		/* Flex shrink to prevent icon from being compressed */
+		flex-shrink: 0;
+	}
+	
+	/* Enhanced active state for icons */
+	.icon[data-state='true'] {
+		color: var(--color-white);
+		background: var(--icon-color);
+		border-color: var(--icon-color);
+		box-shadow: var(--shadow-md);
+		transform: scale(1.05);
+	}
+	
+	/* Preserve entity_picture for person entities even when active */
+	.icon[data-state='true'].image {
+		background: transparent;
+		border-color: var(--color-border-subtle);
 	}
 
 	.name {
-		grid-area: name;
-		font-weight: 500;
-		color: inherit;
-		white-space: nowrap;
-		color: var(--theme-button-name-color-off);
+		font-weight: var(--font-medium);
+		color: var(--theme-button-name-color-off, var(--color-text-primary));
+		font-size: 1.1rem;
+		line-height: var(--leading-tight);
+		transition: var(--transition-colors);
+		margin: 0;
+		
+		/* Better text handling for long names */
 		overflow: hidden;
 		text-overflow: ellipsis;
-		font-size: 0.95rem;
-		margin-top: -1px;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
+		-webkit-box-orient: vertical;
+		line-height: 1.2;
+		max-height: 2.4em; /* 2 lines at 1.2 line-height */
 	}
 
 	.state {
-		grid-area: state;
-		font-weight: 400;
+		font-weight: var(--font-normal);
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
-		color: var(--theme-button-state-color-off);
-		font-size: 0.925rem;
-		margin-top: 1px;
+		color: var(--theme-button-state-color-off, var(--color-text-secondary));
+		font-size: 0.75rem;
+		line-height: var(--leading-normal);
+		transition: var(--transition-colors);
+		margin: 0;
+		opacity: 0.8;
 	}
 
 	.container[data-state='true'] {
-		background-color: var(--theme-button-background-color-on);
-		color: black;
+		background: var(--theme-button-background-color-on, var(--color-primary));
+		border-color: var(--color-primary);
+		box-shadow: var(--shadow-lg);
+		color: var(--color-white);
 	}
-
-	.icon[data-state='true'] {
-		color: white;
-		background-color: var(--icon-color);
+	
+	/* Enhanced glass effect for active state */
+	.container[data-state='true']::before {
+		background: linear-gradient(145deg, 
+			rgba(255, 255, 255, 0.2) 0%, 
+			rgba(255, 255, 255, 0.1) 100%);
+		opacity: 1;
 	}
 
 	.name[data-state='true'] {
-		color: var(--theme-button-name-color-on);
+		color: var(--theme-button-name-color-on, var(--color-white));
 	}
 
 	.state[data-state='true'] {
-		color: var(--theme-button-state-color-on);
+		color: var(--theme-button-state-color-on, var(--color-white));
+		opacity: 0.9;
+	}
+
+	/* Modern focus states for accessibility */
+	.container:focus-visible {
+		outline: none;
+		box-shadow: 
+			var(--shadow-lg),
+			0 0 0 3px var(--color-primary-hover);
+	}
+	
+	.container[data-state='true']:focus-visible {
+		box-shadow: 
+			var(--shadow-lg),
+			0 0 0 3px var(--color-white);
 	}
 
 	/* Phone and Tablet (portrait) */
 	@media all and (max-width: 768px) {
 		.container {
-			width: calc(50vw - 1.45rem);
+			/* Maintain square aspect ratio on mobile */
+			aspect-ratio: 1;
+			padding: var(--space-2);
+			gap: var(--space-1);
+			/* Optimize for mobile performance */
+			will-change: auto;
+		}
+		
+		.icon {
+			--icon-size: 3rem;
+			padding: 0.375rem;
+		}
+		
+		.name {
+			font-size: 0.8rem;
+		}
+		
+		.state {
+			font-size: 0.65rem;
+		}
+		
+		.brightness-indicator {
+			top: var(--space-1);
+			right: var(--space-1);
+		}
+		
+		.container:hover {
+			transform: none; /* Disable transform on mobile for better performance */
+		}
+		
+		.icon[data-state='true'] {
+			transform: scale(1.02); /* Reduce scale on mobile */
+		}
+	}
+	
+	/* Reduced motion accessibility */
+	@media (prefers-reduced-motion: reduce) {
+		.container,
+		.container::before,
+		.icon,
+		.name,
+		.state {
+			transition: none;
+		}
+		
+		.container:hover,
+		.icon[data-state='true'] {
+			transform: none;
+		}
+	}
+	
+	/* Dark theme specific enhancements */
+	@media (prefers-color-scheme: dark) {
+		.container {
+			box-shadow: 
+				var(--shadow-md),
+				0 0 0 1px var(--color-glass-light);
+		}
+		
+		.container:hover {
+			box-shadow: 
+				var(--shadow-xl),
+				0 0 0 1px var(--color-glass-medium);
+		}
+		
+		.container[data-state='true'] {
+			box-shadow: 
+				var(--shadow-lg),
+				0 0 0 1px var(--color-primary);
 		}
 	}
 </style>

@@ -1,121 +1,328 @@
-theme: godis
+theme: muted
 hide_views: false
 hide_sidebar: false
 sidebarWidth: 391
 views:
-  - name: Hemma
+  - name: Home
     id: 6467602449648
     sections:
       - type: horizontal-stack
         id: 5078078976670
         sections:
-          - name: Test
+          - name: Living Room
             id: 2171067078835
             items:
+              - id: 5008685947164
+                type: button
+                entity_id: light.lamp
+                icon: mdi:floor-lamp
               - type: button
-                entity_id: light.studio_dator
-                id: 5008685947164
-              - type: button
-                entity_id: light.vardagsrum
+                entity_id: switch.livingroom_spots
                 id: 6094154428386
-                name: Belysning
+                name: Spotlights
+                icon: mdi:track-light
               - type: button
-                entity_id: light.vardagsrum_horna
+                entity_id: switch.livingroom_switch_1_2
                 color: '#1cd760'
                 marquee: true
                 id: 4795962599238
-                name: Hörnlampa
-              - type: button
-                entity_id: media_player.sony_bravia_tv
-                id: 7351468287678
+                name: LED Strip
+                icon: mdi:led-strip-variant
+                layout: square
               - type: button
                 id: 3728122340522
-                entity_id: switch.deltaco_sh_p01_socket
-          - name: Studio
+                entity_id: climate.living_room
+                icon: mdi:radiator
+                name: Climate
+              - id: 7351468287678
+              - id: 5313768462625
+                type: conditional_media
+                entity_id: media_player.appletv
+                media_players:
+                  - entity_id: media_player.appletv
+                  - entity_id: media_player.living_room_display
+          - name: Kiddo
             id: 9828119797472
             items:
               - type: button
-                entity_id: light.studio_group
+                entity_id: light.wiz_rgbww_tunable_b3e032
                 id: 3316142550855
+                icon: mdi:led-strip
+                name: Bed lights
               - type: button
-                entity_id: switch.imac
+                entity_id: switch.kids_room_switch_1
                 id: 3575493192177
-              - type: button
-                entity_id: switch.gosund_monitors_switch
-                id: 8082348418851
-                icon: material-symbols:speaker
-      - type: horizontal-stack
-        id: 4240433563768
-        sections:
-          - name: Media
-            id: 7859955675791
-            items:
-              - type: media
-                id: 5276106620601
-                conditional:
-                  - entity_id: sensor.plex_recently_added
-                    name: Senast tillagt
-                    icon: mdi:plex
-                    color: orange
-                  - entity_id: media_player.vardagsrum
-                  - entity_id: media_player.sovrum
-                  - entity_id: media_player.spotify
-                    icon: mdi:spotify
-                  - entity_id: media_player.kok
-          - name: Övrigt
-            items:
-              - type: button
-                id: 4326750373921
-                entity_id: light.badrum_group
-              - type: button
-                id: 6654837792944
-                entity_id: switch.gosund_fan_switch
-                icon: mdi:fan
-              - type: button
-                id: 9182560073626
-                entity_id: light.garderob_lampa
-                name: Garderob
-                icon: material-symbols:door-front-sharp
+                name: Lights
+                icon: mdi:track-light
+              - id: 8082348418851
+                type: conditional_media
+                entity_id: media_player.kids_speaker
+                media_players:
+                  - entity_id: media_player.kids_speaker
+              - id: 3495384962489
+                type: button
+                entity_id: climate.kid_s_room
+                icon: mdi:radiator
+                name: Climate
               - type: button
                 id: 6583508288448
-                entity_id: light.hall_group
-                name: Hall
+                entity_id: device_tracker.livingroom_firetv_stick
+                name: TV²
+                icon: mdi:television
+          - name: Bedroom
+            id: 7859955675791
+            items:
+              - id: 7006423006439
+                type: button
+                entity_id: switch.bedroom_lights_switch_1
+                icon: mdi:globe-light
+                name: Her Side
               - type: button
-                entity_id: light.sovrum_group
+                entity_id: switch.bedroom_lights_switch_2
                 id: 4536918822520
+                name: His Side
+                icon: mdi:globe-light
               - type: button
-                entity_id: climate.ac
-                marquee: true
-                id: 2763550457343
-                name: Klimat
-              - type: button
-                entity_id: switch.ps5_635_power
+                entity_id: vacuum.vacuum
                 color: '#1cd760'
                 marquee: true
                 id: 8427787269294
-                name: Playstation
+                name: Vasiliki
               - type: button
-                entity_id: media_player.samsung
-                id: 1503994513807
+                entity_id: climate.master_bedroom
+                marquee: true
+                id: 2763550457343
+                name: Climate
+                icon: mdi:radiator
+              - id: 9182560073626
+                type: conditional_media
+                entity_id: media_player.master_bedroom_speaker
+                media_players:
+                  - entity_id: media_player.master_bedroom_speaker
+      - type: horizontal-stack
+        id: 4240433563768
+        sections:
+          - name: Kitchen
+            items:
+              - type: button
+                id: 4326750373921
+                entity_id: switch.sonoff_10001e18d9
+                icon: mdi:led-strip-variant
+                name: Kitchen LED
+              - type: button
+                entity_id: switch.dining_area_switch_1
+                id: 7277357447040
+                name: Dining¹
+                icon: mdi:vanity-light
+                layout: square
+              - type: button
+                entity_id: switch.dining_area_switch_2
+                id: 6572908294449
+                name: Dining²
+                icon: mdi:light-recessed
+              - type: button
+                id: 6654837792944
+                entity_id: sensor.fridge_power
+                icon: mdi:fridge-outline
             id: 7274165372538
-      - name: Hemma
-        items:
-          - type: button
-            id: 5560216674913
-            entity_id: person.matte
-            icon: fluent-emoji-flat:alien
-          - type: button
-            id: 8128083996424
-            entity_id: person.sanja
-          - type: button
-            id: 3574383219011
-            entity_id: script.home_leave
-            icon: fluent:hand-wave-20-filled
-          - type: button
-            id: 3827902926530
-            entity_id: script.home_arrive
-            icon: material-symbols:home-rounded
-        id: 1412018494330
+          - name: Home
+            items:
+              - type: button
+                id: 5560216674913
+                entity_id: person.bogdan_botezatu
+                icon: fluent-emoji-flat:alien
+              - type: button
+                id: 8128083996424
+                entity_id: person.loredana_botezatu
+              - type: button
+                id: 3574383219011
+                entity_id: person.stefan_botezatu
+                icon: fluent:hand-wave-20-filled
+            id: 1412018494330
+    icon: mdi:home-assistant
+  - name: Living Room
+    id: 8572753321646
+    sections:
+      - type: horizontal-stack
+        sections:
+          - name: Lights
+            items:
+              - id: 1527065781862
+                type: button
+                entity_id: switch.livingroom_spots_switch_1
+                name: Spots¹
+                icon: mdi:track-light
+              - id: 3237742657244
+                type: button
+                entity_id: switch.livingroom_spots_switch_2
+                name: Spots²
+                icon: mdi:track-light
+              - id: 4375452952520
+                type: button
+                entity_id: switch.livingroom_switch_1_2
+                name: Main Lights
+                icon: mdi:led-strip-variant
+              - id: 4214329073011
+                type: button
+                entity_id: light.lamp
+                icon: mdi:floor-lamp
+              - id: 5907890153581
+                type: button
+                entity_id: climate.living_room
+                name: Climate
+                icon: mdi:home-thermometer-outline
+                layout: rectangular
+            id: 3586594252452
+        id: 3776664631710
+      - type: horizontal-stack
+        sections:
+          - name: Multimedia
+            items:
+              - id: 2374328689809
+                type: conditional_media
+                entity_id: media_player.living_room_display
+                media_players:
+                  - entity_id: ''
+              - id: 7998172446712
+                type: conditional_media
+                entity_id: media_player.appletv
+                media_players:
+                  - entity_id: media_player.appletv
+              - id: 7888351380928
+                type: conditional_media
+                entity_id: media_player.chromecast_4k
+                media_players:
+                  - entity_id: ''
+            id: 6242450536936
+        id: 7130246011335
+      - type: horizontal-stack
+        sections:
+          - name: Power Consumption
+            items:
+              - id: 6701691005455
+                type: graph
+                entity_id: sensor.wine_fridge_power
+                config:
+                  hours: 24
+                  stroke_color: '#00a3d7'
+                  fill_color: '#00a3d740'
+                name: Wine Fridge
+              - id: 9836970928974
+                type: graph
+                entity_id: sensor.work_desk_power
+                config:
+                  hours: 24
+                  stroke_color: '#be38f3'
+                  fill_color: '#be38f340'
+              - id: 6871079157304
+                type: graph
+                entity_id: sensor.multimedia_deck_power
+                config:
+                  hours: 24
+                  stroke_color: '#b92d5d'
+                  fill_color: '#b92d5d40'
+            id: 8276196615594
+        id: 2918848339982
+    icon: mdi:sofa-outline
+  - name: Server Rack
+    id: 2577529191956
+    sections:
+      - type: horizontal-stack
+        sections:
+          - name: Rack Overview
+            items:
+              - id: 8718288126397
+                type: graph
+                entity_id: sensor.server_rack_current_consumption
+                config:
+                  hours: 24
+                  stroke_color: '#006d8f'
+                  fill_color: '#00a3d740'
+                name: Current Power Consumption
+              - id: 2462048312949
+                type: button
+                entity_id: sensor.home_assistant_core_memory_percent
+                name: Home Assistant Memory
+              - id: 7957697757583
+                type: button
+                entity_id: sensor.thor_download_throughput_4
+                name: Thor Download Bandwidth
+                icon: mdi:download-box-outline
+            id: 6588585527898
+        id: 8412700042137
+      - type: horizontal-stack
+        sections:
+          - name: Minecraft Server
+            items:
+              - id: 2314596710051
+                type: button
+                entity_id: sensor.minecraft_server_version
+                icon: mdi:minecraft
+                name: Minecraft Server Version
+              - id: 9052184549663
+                type: button
+                entity_id: sensor.minecraft_server_players_online
+                name: Online Players
+                icon: mdi:controller
+            id: 4332174907663
+        id: 8828610441173
+      - name: Section
+        items: []
+        id: 8773231244713
+    icon: mdi:server-outline
+  - name: Multimedia
+    id: 1901816129504
+    sections:
+      - type: horizontal-stack
+        sections:
+          - name: Living Room
+            items:
+              - id: 2979276316744
+                type: conditional_media
+                entity_id: media_player.appletv
+                media_players:
+                  - entity_id: media_player.appletv
+              - id: 9743593758323
+                type: conditional_media
+                entity_id: media_player.chromecast_4k
+                media_players:
+                  - entity_id: media_player.chromecast_4k
+              - id: 6323249788919
+                type: conditional_media
+                entity_id: media_player.living_room_display
+                media_players:
+                  - entity_id: media_player.living_room_display
+            id: 7994455239681
+        id: 2201887794637
+      - type: horizontal-stack
+        sections:
+          - name: Kiddo
+            items:
+              - id: 8316481009457
+                type: conditional_media
+                entity_id: media_player.kids_speaker
+                media_players:
+                  - entity_id: media_player.kids_speaker
+            id: 4051061237778
+          - name: Bedroom
+            items:
+              - id: 5852663351892
+                type: conditional_media
+                entity_id: media_player.fire_tv_192_168_7_101
+                media_players:
+                  - entity_id: media_player.fire_tv_192_168_7_101
+                show_timeout: true
+            id: 5807864108291
+        id: 2191605068744
+    icon: mdi:multimedia
+  - name: Climate
+    id: 5512526113825
+    sections: []
+    icon: mdi:home-thermometer-outline
+  - name: Garage
+    id: 2037530090872
+    sections: []
+    icon: mdi:garage-variant
   - name: Entities
     icon: material-symbols:filter-list-rounded
     id: 5813909951190
@@ -245,28 +452,48 @@ sidebar:
     shortday: false
     shortmonth: false
     id: 2790676345913
+  - id: 5809438092286
+    type: camera
+    entity_id: camera.g4_instant_high_resolution_channel
+  - id: 4973169495235
+    type: binary_sensor
+    entity_id: binary_sensor.contact_sensor_door
+    prefix: 'Entrance door is '
+    suffix: ' now'
+    on_value: open
+    off_value: closed
+    icon_on: mdi:door-open
+    icon_off: mdi:door-closed
+  - id: 1186869867931
+    type: binary_sensor
+    entity_id: binary_sensor.x1_xdrive20i_door_lock_state
+    prefix: 'Car doors are currently '
+    suffix: ''
+    on_value: unlocked
+    off_value: locked
+    icon_on: mdi:car-door-lock-open
+    icon_off: mdi:car-door-lock
   - type: template
     id: 1506524483596
-    template: <b>Vecka {{ now().strftime("%W") }}</b>
-  - type: sensor
-    entity_id: sensor.template_greet
-    date: false
-    id: 2790676343773
-  - type: weather
-    entity_id: weather.openweathermap
-    weather_sensor: sensor.openweathermap_weather
-    extra_sensor: sensor.openweathermap_forecast_precipitation_probability
-    extra_sensor_icon: mdi:drop
-    icon_pack: meteocons
-    id: 2790676343766
+    template: <b>Week {{ now().strftime("%W") }}</b>
+  - type: navigate
+    id: 4055198699454
+  - id: 2790676343766
+    type: weather
+    entity_id: weather.forecast_home
+    sensor: sensor.home_outdoor_temperature
+  - id: 2790676343773
+    type: weather_forecast
+    entity_id: weather.forecast_home
   - type: divider
     id: 6627143742873
-  - type: sensor
-    entity_id: sensor.template_laundry
-    id: 2790676343722
-  - type: sensor
-    entity_id: sensor.template_vacuum
-    id: 2790676343733
+  - id: 2790676343722
+    type: graph
+    entity_id: sensor.energy_meter_phase_a_power
+    name: Household energy usage
+  - id: 2790676343733
+    type: graph
+    entity_id: sensor.thor_memory_usage_real_4
   - type: sensor
     entity_id: sensor.template_mailbox
     id: 2790676343744
@@ -274,8 +501,6 @@ sidebar:
   - type: sensor
     entity_id: sensor.template_battery
     id: 2790676343711
-  - type: navigate
-    id: 4055198699454
   - type: timer
     entity_id: timer.test
     id: 5786160817081
