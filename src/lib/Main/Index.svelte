@@ -19,11 +19,30 @@
 	let isDraggingHorizontalStack = false;
 	let isDraggingScenes = false;
 	let skipTransformElement = false;
+	let isMobile = false;
 
 	const stackHeight = $itemHeight * 1.65;
 
 	let mounted = false;
-	onMount(() => (mounted = true));
+	onMount(() => {
+		mounted = true;
+		
+		// Handle mobile media query
+		const handleMediaQueryChange = (event: { matches: boolean }) => {
+			isMobile = event.matches;
+		};
+
+		// Use same breakpoint as CSS media query
+		const mediaQuery = window.matchMedia('(max-width: 768px)');
+		isMobile = mediaQuery.matches;
+
+		mediaQuery.addEventListener('change', handleMediaQueryChange);
+		
+		// cleanup
+		return () => {
+			mediaQuery.removeEventListener('change', handleMediaQueryChange);
+		};
+	});
 
 	$: dndOptions = {
 		flipDurationMs: $motion,
@@ -186,16 +205,16 @@
 		// Handle button layout
 		if (type === 'button' && item?.layout === 'rectangular') {
 			return `
-				grid-column: span 2;
+				grid-column: ${isMobile ? 'span 1' : 'span 2'};
 				grid-row: span 1;
 				display: ${type ? '' : 'none'};
 			`;
 		}
 		
-		// Handle graph items - make them span 2 columns like rectangular buttons
+		// Handle graph items - make them span 2 columns like rectangular buttons (but not on mobile)
 		if (type === 'graph') {
 			return `
-				grid-column: span 2;
+				grid-column: ${isMobile ? 'span 1' : 'span 2'};
 				grid-row: span 1;
 				display: ${type ? '' : 'none'};
 			`;
@@ -474,6 +493,15 @@
 		border-radius: 0.65rem;
 	}
 
+	/* Tablet (landscape) and smaller desktop windows */
+	@media all and (max-width: 1200px) {
+		.horizontal-stack {
+			/* Start stacking at larger screens to prevent overcrowding */
+			grid-auto-flow: row;
+			gap: 1.5rem;
+		}
+	}
+
 	/* Phone and Tablet (portrait) */
 	@media all and (max-width: 768px) {
 		main {
@@ -486,8 +514,18 @@
 		}
 
 		.items {
-			display: flex;
-			flex-wrap: wrap;
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+			gap: 0.75rem;
+		}
+	}
+
+	/* Very narrow screens - ensure vertical stacking */
+	@media all and (max-width: 600px) {
+		.horizontal-stack {
+			grid-auto-flow: row;
+			grid-auto-columns: 1fr;
+			gap: 1rem;
 		}
 	}
 
