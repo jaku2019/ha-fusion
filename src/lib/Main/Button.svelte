@@ -931,12 +931,37 @@
 	/* Phone and Tablet (portrait) */
 	@media all and (max-width: 768px) {
 		.container {
-			/* Maintain square aspect ratio on mobile */
+			/* Maintain consistent aspect ratio on mobile */
 			aspect-ratio: 1;
 			padding: var(--space-2);
 			gap: var(--space-1);
+			/* Ensure minimum width for consistency */
+			min-width: 8.5rem;
+			width: 100%;
 			/* Optimize for mobile performance */
 			will-change: auto;
+		}
+		
+		/* Force rectangular layouts to be square on mobile for consistency */
+		.container[data-layout='rectangular'] {
+			aspect-ratio: 1;
+			--button-grid-rows: auto 1fr;
+			--button-grid-columns: 1fr;
+			--button-grid-areas: 'icon' 'content';
+		}
+		
+		/* Reset rectangular content positioning for mobile */
+		.container[data-layout='rectangular'] .content {
+			justify-content: center;
+			align-items: center;
+			padding-left: 0;
+			text-align: center;
+		}
+		
+		/* Reset rectangular icon positioning for mobile */
+		.container[data-layout='rectangular'] .icon-container {
+			align-self: start;
+			justify-self: center;
 		}
 		
 		.icon {
