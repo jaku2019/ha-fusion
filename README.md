@@ -59,6 +59,12 @@ The current state of this project is **pre-beta**. This means that there's basic
 
 This enhanced fork can be installed using Docker. The original add-on installation method is not available for this fork.
 
+### Quick install
+
+Click and run a prebuilt version of the dashboard:
+
+[![Open your Home Assistant instance and show the add add-on repository dialog with a specific repository URL pre-filled.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fbogdanbotezatu%2Faddon-ha-fusion)
+
 ### Docker
 
 Install this enhanced version of ha-fusion via Docker:
