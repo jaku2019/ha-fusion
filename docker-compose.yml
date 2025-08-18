@@ -8,6 +8,6 @@ services:
     ports:
       - 5050:5050
     environment:
-      TZ: Europe/Stockholm
-      HASS_URL: http://192.168.1.230:8123
+      TZ: Europe/Bucharest
+      HASS_URL: http://192.168.1.210:8123
     restart: always
