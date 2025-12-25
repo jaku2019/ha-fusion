@@ -1,7 +1,5 @@
 <script lang="ts">
 	import ComputeIcon from '$lib/Components/ComputeIcon.svelte';
-	import CircularBrightnessIndicator from '$lib/Components/CircularBrightnessIndicator.svelte';
-	import CircularTemperatureIndicator from '$lib/Components/CircularTemperatureIndicator.svelte';
 	import StateLogic from '$lib/Components/StateLogic.svelte';
 	import {
 		connection,
@@ -87,7 +85,8 @@
 			: 'rgb(75, 166, 237)';
 
 	// icon is image if extension, e.g. test.png, OR if person entity with entity_picture
-	$: image = icon?.includes('.') || (getDomain(entity_id) === 'person' && attributes?.entity_picture);
+	$: image =
+		icon?.includes('.') || (getDomain(entity_id) === 'person' && attributes?.entity_picture);
 
 	$: if (sel?.template?.set_state && template?.set_state?.output) {
 		// template
@@ -161,7 +160,7 @@
 	 */
 	function handlePointerDown(event: PointerEvent) {
 		if ($editMode) return;
-		
+
 		isLongPress = false;
 		pressTimer = setTimeout(() => {
 			isLongPress = true;
@@ -531,56 +530,8 @@
 			: 'rgba(0, 0, 0, 0)'
 	}}
 >
-	<!-- CIRCULAR INDICATORS -->
-	{#if stateOn && attributes?.brightness && getDomain(entity_id) === 'light'}
-		<div class="brightness-indicator">
-			<CircularBrightnessIndicator 
-				{entity_id}
-				{attributes}
-				value={Math.round((attributes.brightness / 255) * 100)}
-				size={44}
-				strokeWidth={3}
-			/>
-		</div>
-	{:else if stateOn && attributes?.current_position !== undefined && getDomain(entity_id) === 'cover'}
-		<div class="brightness-indicator">
-			<CircularBrightnessIndicator 
-				{entity_id}
-				{attributes}
-				value={attributes.current_position}
-				size={44}
-				strokeWidth={3}
-			/>
-		</div>
-	{:else if stateOn && attributes?.volume_level !== undefined && getDomain(entity_id) === 'media_player'}
-		<div class="brightness-indicator">
-			<CircularBrightnessIndicator 
-				{entity_id}
-				{attributes}
-				value={Math.round(attributes.volume_level * 100)}
-				size={44}
-				strokeWidth={3}
-			/>
-		</div>
-	{:else if getDomain(entity_id) === 'climate' && attributes?.current_temperature !== undefined}
-		<div class="brightness-indicator">
-			<CircularTemperatureIndicator 
-				{entity_id}
-				{attributes}
-				temperature={attributes.current_temperature}
-				size={44}
-				strokeWidth={3}
-			/>
-		</div>
-	{/if}
-
 	<!-- ICON -->
-	<div
-		class="icon-container"
-		on:keydown
-		role="button"
-		tabindex="0"
-	>
+	<div class="icon-container" on:keydown role="button" tabindex="0">
 		<div
 			class="icon"
 			data-state={stateOn}
@@ -588,7 +539,8 @@
 			style:background-color={sel?.template?.color && template?.color?.output
 				? template?.color?.output
 				: undefined}
-			style:background-image={(getDomain(entity_id) === 'person' && attributes?.entity_picture) || (!icon && attributes?.entity_picture)
+			style:background-image={(getDomain(entity_id) === 'person' && attributes?.entity_picture) ||
+			(!icon && attributes?.entity_picture)
 				? `url(${attributes?.entity_picture})`
 				: image && icon
 					? `url(${icon})`
@@ -647,83 +599,29 @@
 
 <style>
 	.container {
-		/* Enhanced background with fallbacks */
-		background: var(--theme-button-background-color-off, var(--color-surface-elevated));
+		background: var(--theme-button-background-color-off);
 		font-family: inherit;
 		width: 100%;
 		height: 100%;
 		display: grid;
-		
-		/* Dynamic aspect ratio based on layout */
-		aspect-ratio: var(--button-aspect-ratio, 1);
-		
-		/* Modern border radius and visual effects */
-		border-radius: var(--radius-xl);
-		border: 1px solid var(--color-border-subtle);
-		box-shadow: var(--shadow-md);
-		
+		aspect-ratio: 1;
+		border-radius: 0.7em;
 		margin: 0;
-		
-		/* Dynamic grid layout based on layout type */
-		grid-template-rows: var(--button-grid-rows, auto 1fr);
-		grid-template-columns: var(--button-grid-columns, 1fr);
-		grid-template-areas: var(--button-grid-areas, 'icon' 'content');
-		gap: var(--space-2);
-		padding: var(--space-3);
-
-		/* Enhanced ripple effect support */
-		transform: translateZ(0);
+		grid-template-rows: auto 1fr;
+		grid-template-columns: 1fr;
+		gap: 0.5em;
+		padding: 0.85em;
 		overflow: hidden;
 		position: relative;
-		
-		/* Modern glassmorphism effect */
-		backdrop-filter: blur(var(--blur-sm));
-		-webkit-backdrop-filter: blur(var(--blur-sm));
-		
-		/* Smooth transitions */
-		transition: var(--transition-all);
-		
-		/* Subtle gradient overlay */
-		background-image: var(--gradient-surface);
+		transition: background-color 0.2s ease;
 	}
-	
-	/* Square layout (default) */
-	.container:not([data-layout='rectangular']) {
-		--button-aspect-ratio: 1;
-		--button-grid-rows: auto 1fr;
-		--button-grid-columns: 1fr;
-		--button-grid-areas: 'icon' 'content';
-	}
-	
+
 	/* Rectangular layout */
 	.container[data-layout='rectangular'] {
-		--button-aspect-ratio: 2 / 1;
-		--button-grid-rows: 1fr;
-		--button-grid-columns: auto 1fr;
-		--button-grid-areas: 'icon content';
-	}
-	
-	/* Enhanced hover states */
-	.container:hover {
-		box-shadow: var(--shadow-xl);
-		transform: translateY(-2px);
-		border-color: var(--color-border-emphasis);
-	}
-	
-	/* Modern glass overlay effect */
-	.container::before {
-		content: '';
-		position: absolute;
-		inset: 0;
-		background: var(--gradient-glass);
-		opacity: 0;
-		transition: opacity var(--transition-medium);
-		pointer-events: none;
-		border-radius: inherit;
-	}
-	
-	.container:hover::before {
-		opacity: 0.5;
+		aspect-ratio: 2 / 1;
+		grid-template-rows: 1fr;
+		grid-template-columns: auto 1fr;
+		grid-template-areas: 'icon content';
 	}
 
 	.image {
@@ -731,97 +629,36 @@
 		background-repeat: no-repeat;
 		background-position: center center;
 	}
-	
-	/* Specific styling for person entity avatars to ensure faces are visible */
-	.person-avatar {
-		background-size: cover !important;
-		background-position: center 30% !important; /* Focus on upper area where face usually is */
-		border-radius: 50% !important; /* Make avatars circular */
-		padding: 0 !important; /* Remove padding for full avatar display */
-	}
-	
-	/* Preserve circular avatar styling even when active */
-	.icon[data-state='true'].person-avatar {
-		background: transparent;
-		border-color: var(--color-border-subtle);
-		border-radius: 50% !important;
-		padding: 0 !important;
-	}
 
-	/* Brightness indicator in top-right corner */
-	.brightness-indicator {
-		position: absolute;
-		top: var(--space-2);
-		right: var(--space-2);
-		z-index: 3;
-		
-		/* Prevent interference with button interactions */
-		pointer-events: auto;
-	}
-
-	/* Icon container positioned at top-left */
 	.icon-container {
-		grid-area: icon;
 		justify-self: start;
 		align-self: start;
-		position: relative;
-		z-index: 2;
-	}
-	
-	/* Rectangular layout icon adjustments */
-	.container[data-layout='rectangular'] .icon-container {
-		align-self: center;
-	}
-	
-	/* Ensure icon size is optimized for rectangular layout */
-	.container[data-layout='rectangular'] .icon {
-		--icon-size: 2.5rem;
 	}
 
-	/* Content area with larger text */
+	.container[data-layout='rectangular'] .icon-container {
+		grid-area: icon;
+		align-self: center;
+	}
+
 	.content {
-		grid-area: content;
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
-		gap: var(--space-1);
-		position: relative;
-		z-index: 2;
-		min-height: 0; /* Allow content to shrink */
+		justify-content: flex-end;
+		gap: 0.15em;
 	}
-	
-	/* Rectangular layout content adjustments */
+
 	.container[data-layout='rectangular'] .content {
+		grid-area: content;
 		justify-content: center;
-		align-items: flex-start;
-		padding-left: var(--space-2);
-		text-align: left;
-	}
-	
-	/* Improve text spacing for rectangular layout */
-	.container[data-layout='rectangular'] .name {
-		font-size: 1.1rem;
-		font-weight: 500;
-		line-height: 1.2;
-	}
-	
-	.container[data-layout='rectangular'] .state {
-		font-size: 0.95rem;
-		opacity: 0.85;
+		padding-left: 0.5em;
 	}
 
 	.icon {
-		--icon-size: 3rem;
-		height: var(--icon-size);
-		width: var(--icon-size);
+		height: 2.3rem;
+		width: 2.3rem;
 		color: var(--icon-color);
-		
-		/* Enhanced icon background */
-		background: var(--color-surface);
-		border: 1px solid var(--color-border-subtle);
-		box-shadow: var(--shadow-sm);
-		
-		border-radius: var(--radius-lg);
+		background: rgba(0, 0, 0, 0.15);
+		border-radius: 0.6em;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -829,202 +666,76 @@
 		background-position: center center;
 		background-size: cover;
 		background-repeat: no-repeat;
-		
-		/* Glass effect for icon */
-		backdrop-filter: blur(8px);
-		-webkit-backdrop-filter: blur(8px);
-		
-		/* Smooth transitions */
-		transition: var(--transition-all);
-		position: relative;
-		z-index: 1;
-		
-		/* Flex shrink to prevent icon from being compressed */
-		flex-shrink: 0;
+		transition:
+			background-color 0.2s ease,
+			transform 0.2s ease;
 	}
-	
-	/* Enhanced active state for icons */
+
 	.icon[data-state='true'] {
-		color: var(--color-white);
+		color: rgb(255, 255, 255);
 		background: var(--icon-color);
-		border-color: var(--icon-color);
-		box-shadow: var(--shadow-md);
-		transform: scale(1.05);
 	}
-	
-	/* Preserve entity_picture for person entities even when active */
+
+	/* Preserve entity_picture for person entities */
 	.icon[data-state='true'].image {
 		background: transparent;
-		border-color: var(--color-border-subtle);
 	}
 
 	.name {
-		font-weight: var(--font-medium);
-		color: var(--theme-button-name-color-off, var(--color-text-primary));
-		font-size: 1.1rem;
-		line-height: var(--leading-tight);
-		transition: var(--transition-colors);
-		margin: 0;
-		
-		/* Better text handling for long names */
-		overflow: hidden;
-		text-overflow: ellipsis;
-		display: -webkit-box;
-		-webkit-line-clamp: 2;
-		line-clamp: 2;
-		-webkit-box-orient: vertical;
-		line-height: 1.2;
-		max-height: 2.4em; /* 2 lines at 1.2 line-height */
-	}
-
-	.state {
-		font-weight: var(--font-normal);
+		font-weight: 500;
+		color: var(--theme-button-name-color-off);
+		font-size: 0.95em;
+		line-height: 1.2em;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
-		color: var(--theme-button-state-color-off, var(--color-text-secondary));
-		font-size: 0.75rem;
-		line-height: var(--leading-normal);
-		transition: var(--transition-colors);
 		margin: 0;
-		opacity: 0.8;
+	}
+
+	.state {
+		font-weight: 400;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		color: var(--theme-button-state-color-off);
+		font-size: 0.75em;
+		opacity: 0.7;
+		margin: 0;
 	}
 
 	.container[data-state='true'] {
-		background: var(--theme-button-background-color-on, var(--color-primary));
-		border-color: var(--color-primary);
-		box-shadow: var(--shadow-lg);
-		color: var(--color-white);
-	}
-	
-	/* Enhanced glass effect for active state */
-	.container[data-state='true']::before {
-		background: linear-gradient(145deg, 
-			rgba(255, 255, 255, 0.2) 0%, 
-			rgba(255, 255, 255, 0.1) 100%);
-		opacity: 1;
+		background: var(--theme-button-background-color-on);
 	}
 
 	.name[data-state='true'] {
-		color: var(--theme-button-name-color-on, var(--color-white));
+		color: var(--theme-button-name-color-on);
 	}
 
 	.state[data-state='true'] {
-		color: var(--theme-button-state-color-on, var(--color-white));
-		opacity: 0.9;
-	}
-
-	/* Modern focus states for accessibility */
-	.container:focus-visible {
-		outline: none;
-		box-shadow: 
-			var(--shadow-lg),
-			0 0 0 3px var(--color-primary-hover);
-	}
-	
-	.container[data-state='true']:focus-visible {
-		box-shadow: 
-			var(--shadow-lg),
-			0 0 0 3px var(--color-white);
+		color: var(--theme-button-state-color-on);
+		opacity: 0.8;
 	}
 
 	/* Phone and Tablet (portrait) */
 	@media all and (max-width: 768px) {
 		.container {
-			/* Maintain consistent aspect ratio on mobile */
 			aspect-ratio: 1;
-			padding: var(--space-2);
-			gap: var(--space-1);
-			/* Ensure minimum width for consistency */
-			min-width: 8.5rem;
-			width: 100%;
-			/* Optimize for mobile performance */
-			will-change: auto;
+			padding: 0.65em;
+			gap: 0.35em;
 		}
-		
-		/* Force rectangular layouts to be square on mobile for consistency */
-		.container[data-layout='rectangular'] {
-			aspect-ratio: 1;
-			--button-grid-rows: auto 1fr;
-			--button-grid-columns: 1fr;
-			--button-grid-areas: 'icon' 'content';
-		}
-		
-		/* Reset rectangular content positioning for mobile */
-		.container[data-layout='rectangular'] .content {
-			justify-content: center;
-			align-items: center;
-			padding-left: 0;
-			text-align: center;
-		}
-		
-		/* Reset rectangular icon positioning for mobile */
-		.container[data-layout='rectangular'] .icon-container {
-			align-self: start;
-			justify-self: center;
-		}
-		
+
 		.icon {
-			--icon-size: 3rem;
-			padding: 0.375rem;
+			height: 2rem;
+			width: 2rem;
+			padding: 0.4rem;
 		}
-		
+
 		.name {
-			font-size: 0.8rem;
+			font-size: 0.85em;
 		}
-		
+
 		.state {
-			font-size: 0.65rem;
-		}
-		
-		.brightness-indicator {
-			top: var(--space-1);
-			right: var(--space-1);
-		}
-		
-		.container:hover {
-			transform: none; /* Disable transform on mobile for better performance */
-		}
-		
-		.icon[data-state='true'] {
-			transform: scale(1.02); /* Reduce scale on mobile */
-		}
-	}
-	
-	/* Reduced motion accessibility */
-	@media (prefers-reduced-motion: reduce) {
-		.container,
-		.container::before,
-		.icon,
-		.name,
-		.state {
-			transition: none;
-		}
-		
-		.container:hover,
-		.icon[data-state='true'] {
-			transform: none;
-		}
-	}
-	
-	/* Dark theme specific enhancements */
-	@media (prefers-color-scheme: dark) {
-		.container {
-			box-shadow: 
-				var(--shadow-md),
-				0 0 0 1px var(--color-glass-light);
-		}
-		
-		.container:hover {
-			box-shadow: 
-				var(--shadow-xl),
-				0 0 0 1px var(--color-glass-medium);
-		}
-		
-		.container[data-state='true'] {
-			box-shadow: 
-				var(--shadow-lg),
-				0 0 0 1px var(--color-primary);
+			font-size: 0.7em;
 		}
 	}
 </style>

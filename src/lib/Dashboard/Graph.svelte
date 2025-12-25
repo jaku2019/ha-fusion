@@ -16,12 +16,12 @@
 	let history: Array<{ state: string; last_changed: string }> = [];
 	let width = 0;
 	let height = 200;
-	
+
 	$: hours = config?.hours || 24;
 	$: strokeColor = config?.stroke_color || '#4fc3f7';
 	$: fillColor = config?.fill_color || '#4fc3f740';
 
-	$: entity = entity_id && $states?.[entity_id] as HassEntity;
+	$: entity = entity_id && ($states?.[entity_id] as HassEntity);
 	$: if (canvas && entity_id) {
 		fetchHistory();
 	}
@@ -39,11 +39,13 @@
 	}
 
 	// Debug logging
-	$: console.log('Graph component debug:', { 
-		entity_id, 
-		entity: entity ? 'found' : 'not found', 
+	$: console.log('Graph component debug:', {
+		entity_id,
+		entity: entity ? 'found' : 'not found',
 		states_available: Object.keys($states || {}).length,
-		available_entities: Object.keys($states || {}).filter(key => key.startsWith('sensor.')).slice(0, 5),
+		available_entities: Object.keys($states || {})
+			.filter((key) => key.startsWith('sensor.'))
+			.slice(0, 5),
 		config,
 		strokeColor,
 		fillColor,
@@ -104,9 +106,7 @@
 
 		ctx.clearRect(0, 0, width, height);
 
-		const values = history
-			.map(point => parseFloat(point.state))
-			.filter(val => !isNaN(val));
+		const values = history.map((point) => parseFloat(point.state)).filter((val) => !isNaN(val));
 
 		if (values.length < 2) return;
 
@@ -129,7 +129,7 @@
 		if (points.length > 1) {
 			ctx.beginPath();
 			ctx.moveTo(points[0].x, height);
-			points.forEach(point => ctx.lineTo(point.x, point.y));
+			points.forEach((point) => ctx.lineTo(point.x, point.y));
 			ctx.lineTo(points[points.length - 1].x, height);
 			ctx.closePath();
 			ctx.fillStyle = fillColor;
@@ -140,7 +140,7 @@
 		if (points.length > 1) {
 			ctx.beginPath();
 			ctx.moveTo(points[0].x, points[0].y);
-			points.forEach(point => ctx.lineTo(point.x, point.y));
+			points.forEach((point) => ctx.lineTo(point.x, point.y));
 			ctx.strokeStyle = strokeColor;
 			ctx.lineWidth = 2;
 			ctx.stroke();
@@ -183,8 +183,8 @@
 	});
 </script>
 
-<div 
-	class="graph-container" 
+<div
+	class="graph-container"
 	class:edit-mode={$editMode}
 	on:click={handleClick}
 	on:keydown={handleKeydown}
@@ -217,46 +217,23 @@
 	.graph-container {
 		display: grid;
 		grid-template-rows: auto 1fr;
-		grid-template-areas: 'header' 'graph';
-		
-		/* Match button sizing exactly */
 		width: 100%;
 		height: 100%;
-		
-		/* Button-like styling */
 		aspect-ratio: 2 / 1;
-		border-radius: var(--radius-xl);
-		background: var(--theme-button-background-color-off, var(--color-surface-elevated));
-		border: 1px solid var(--color-border-subtle);
-		box-shadow: var(--shadow-md);
-		padding: var(--space-3);
-		gap: var(--space-2);
-		
-		/* Modern glassmorphism effect */
-		backdrop-filter: blur(var(--blur-sm));
+		border-radius: 0.7em;
+		background: var(--theme-button-background-color-off);
+		padding: 0.85em;
+		gap: 0.5em;
 		overflow: hidden;
-		position: relative;
 		margin: 0;
-		
-		/* Transition effects */
-		transition: all var(--transition-medium);
 	}
 
 	.edit-mode {
-		border-color: var(--theme-colors-primary);
-		box-shadow: var(--shadow-xl);
 		cursor: pointer;
-	}
-
-	/* Hover effect to match buttons */
-	.graph-container:hover {
-		box-shadow: var(--shadow-xl);
-		transform: translateY(-2px);
-		border-color: var(--color-border-emphasis);
+		opacity: 0.8;
 	}
 
 	.header {
-		grid-area: header;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -281,7 +258,6 @@
 	}
 
 	.graph-canvas {
-		grid-area: graph;
 		width: 100%;
 		height: 100%;
 		min-height: 0;
