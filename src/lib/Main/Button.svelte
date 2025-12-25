@@ -85,7 +85,8 @@
 			: 'rgb(75, 166, 237)';
 
 	// icon is image if extension, e.g. test.png, OR if person entity with entity_picture
-	$: image = icon?.includes('.') || (getDomain(entity_id) === 'person' && attributes?.entity_picture);
+	$: image =
+		icon?.includes('.') || (getDomain(entity_id) === 'person' && attributes?.entity_picture);
 
 	$: if (sel?.template?.set_state && template?.set_state?.output) {
 		// template
@@ -159,7 +160,7 @@
 	 */
 	function handlePointerDown(event: PointerEvent) {
 		if ($editMode) return;
-		
+
 		isLongPress = false;
 		pressTimer = setTimeout(() => {
 			isLongPress = true;
@@ -530,12 +531,7 @@
 	}}
 >
 	<!-- ICON -->
-	<div
-		class="icon-container"
-		on:keydown
-		role="button"
-		tabindex="0"
-	>
+	<div class="icon-container" on:keydown role="button" tabindex="0">
 		<div
 			class="icon"
 			data-state={stateOn}
@@ -543,7 +539,8 @@
 			style:background-color={sel?.template?.color && template?.color?.output
 				? template?.color?.output
 				: undefined}
-			style:background-image={(getDomain(entity_id) === 'person' && attributes?.entity_picture) || (!icon && attributes?.entity_picture)
+			style:background-image={(getDomain(entity_id) === 'person' && attributes?.entity_picture) ||
+			(!icon && attributes?.entity_picture)
 				? `url(${attributes?.entity_picture})`
 				: image && icon
 					? `url(${icon})`
@@ -618,7 +615,7 @@
 		position: relative;
 		transition: background-color 0.2s ease;
 	}
-	
+
 	/* Rectangular layout */
 	.container[data-layout='rectangular'] {
 		aspect-ratio: 2 / 1;
@@ -637,7 +634,7 @@
 		justify-self: start;
 		align-self: start;
 	}
-	
+
 	.container[data-layout='rectangular'] .icon-container {
 		grid-area: icon;
 		align-self: center;
@@ -649,7 +646,7 @@
 		justify-content: flex-end;
 		gap: 0.15em;
 	}
-	
+
 	.container[data-layout='rectangular'] .content {
 		grid-area: content;
 		justify-content: center;
@@ -669,14 +666,16 @@
 		background-position: center center;
 		background-size: cover;
 		background-repeat: no-repeat;
-		transition: background-color 0.2s ease, transform 0.2s ease;
+		transition:
+			background-color 0.2s ease,
+			transform 0.2s ease;
 	}
-	
+
 	.icon[data-state='true'] {
 		color: rgb(255, 255, 255);
 		background: var(--icon-color);
 	}
-	
+
 	/* Preserve entity_picture for person entities */
 	.icon[data-state='true'].image {
 		background: transparent;
@@ -724,17 +723,17 @@
 			padding: 0.65em;
 			gap: 0.35em;
 		}
-		
+
 		.icon {
 			height: 2rem;
 			width: 2rem;
 			padding: 0.4rem;
 		}
-		
+
 		.name {
 			font-size: 0.85em;
 		}
-		
+
 		.state {
 			font-size: 0.7em;
 		}

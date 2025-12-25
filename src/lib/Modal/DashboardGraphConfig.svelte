@@ -56,13 +56,13 @@
 			{ id: 'sensor.energy_meter_phase_a_power', label: 'Energy Usage' },
 			{ id: 'sensor.thor_memory_usage_real_4', label: 'Thor Memory Usage' }
 		];
-		
+
 		if (sensorEntities.length === 0) {
 			options = knownEntities;
 		} else {
 			// Combine known entities with available sensor entities
-			const existingIds = new Set(sensorEntities.map(e => e.id));
-			const additionalKnown = knownEntities.filter(e => !existingIds.has(e.id));
+			const existingIds = new Set(sensorEntities.map((e) => e.id));
+			const additionalKnown = knownEntities.filter((e) => !existingIds.has(e.id));
 			options = [...additionalKnown, ...sensorEntities];
 		}
 		console.log('DashboardGraphConfig: Available options:', options.length);
@@ -129,22 +129,26 @@
 
 		<div class="preview">
 			{#if sel?.entity_id}
-				<Graph
-					sel={sel}
-				/>
+				<Graph {sel} />
 			{:else}
-				<div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #888;">
+				<div
+					style="display: flex; align-items: center; justify-content: center; height: 100%; color: #888;"
+				>
 					Select an entity to see preview
 				</div>
 			{/if}
 		</div>
 
 		<h2>{$lang('entity')}</h2>
-		
-		<div style="margin-bottom: 1rem; padding: 0.5rem; background: rgba(255,255,255,0.1); border-radius: 0.25rem; font-size: 0.85rem;">
-			Debug: Current entity_id = "{sel?.entity_id || 'none'}"<br/>
-			Debug: Entity in states = {sel?.entity_id && $states?.[sel?.entity_id] ? 'YES' : 'NO'}<br/>
-			Debug: Available sensor entities = {Object.keys($states || {}).filter(key => key.startsWith('sensor.')).length}
+
+		<div
+			style="margin-bottom: 1rem; padding: 0.5rem; background: rgba(255,255,255,0.1); border-radius: 0.25rem; font-size: 0.85rem;"
+		>
+			Debug: Current entity_id = "{sel?.entity_id || 'none'}"<br />
+			Debug: Entity in states = {sel?.entity_id && $states?.[sel?.entity_id] ? 'YES' : 'NO'}<br />
+			Debug: Available sensor entities = {Object.keys($states || {}).filter((key) =>
+				key.startsWith('sensor.')
+			).length}
 		</div>
 
 		{#if options && options.length > 0}
