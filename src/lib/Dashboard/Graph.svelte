@@ -217,46 +217,23 @@
 	.graph-container {
 		display: grid;
 		grid-template-rows: auto 1fr;
-		grid-template-areas: 'header' 'graph';
-		
-		/* Match button sizing exactly */
 		width: 100%;
 		height: 100%;
-		
-		/* Button-like styling */
 		aspect-ratio: 2 / 1;
-		border-radius: var(--radius-xl);
-		background: var(--theme-button-background-color-off, var(--color-surface-elevated));
-		border: 1px solid var(--color-border-subtle);
-		box-shadow: var(--shadow-md);
-		padding: var(--space-3);
-		gap: var(--space-2);
-		
-		/* Modern glassmorphism effect */
-		backdrop-filter: blur(var(--blur-sm));
+		border-radius: 0.7em;
+		background: var(--theme-button-background-color-off);
+		padding: 0.85em;
+		gap: 0.5em;
 		overflow: hidden;
-		position: relative;
 		margin: 0;
-		
-		/* Transition effects */
-		transition: all var(--transition-medium);
 	}
 
 	.edit-mode {
-		border-color: var(--theme-colors-primary);
-		box-shadow: var(--shadow-xl);
 		cursor: pointer;
-	}
-
-	/* Hover effect to match buttons */
-	.graph-container:hover {
-		box-shadow: var(--shadow-xl);
-		transform: translateY(-2px);
-		border-color: var(--color-border-emphasis);
+		opacity: 0.8;
 	}
 
 	.header {
-		grid-area: header;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -281,7 +258,6 @@
 	}
 
 	.graph-canvas {
-		grid-area: graph;
 		width: 100%;
 		height: 100%;
 		min-height: 0;
