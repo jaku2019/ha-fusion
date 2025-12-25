@@ -8,9 +8,7 @@
 {#if item.component === 'Graph' && components.Graph}
 	<svelte:component 
 		this={components.Graph}
-		{config}
-		entity_id={item.entity_id}
-		{editMode}
+		sel={item}
 	/>
 {:else}
 	<!-- ...existing component handling... -->

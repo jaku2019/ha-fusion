@@ -130,13 +130,7 @@
 		<div class="preview">
 			{#if sel?.entity_id}
 				<Graph
-					entity_id={sel?.entity_id}
-					config={{
-						hours: parseInt(sel?.config?.hours || '24'),
-						stroke_color: sel?.config?.stroke_color || '#4fc3f7',
-						fill_color: sel?.config?.fill_color || '#4fc3f740'
-					}}
-					editMode={true}
+					sel={sel}
 				/>
 			{:else}
 				<div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #888;">
