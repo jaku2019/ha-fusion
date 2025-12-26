@@ -25,8 +25,9 @@ RUN \
 
 # Install bashio for Home Assistant add-on support
 ARG BASHIO_VERSION=0.16.2
+ARG ADDON_MODE=false
 RUN \
-  if [ -d /etc/services.d ]; then \
+  if [ "${BUILD_FROM}" != "" ] && [ "${BUILD_FROM}" != "node:22-alpine" ]; then \
     apk add --no-cache \
       bash \
       curl \

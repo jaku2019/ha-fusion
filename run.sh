@@ -23,7 +23,12 @@ fi
 
 # Get Home Assistant ports for proxy configuration
 export INGRESS_PORT=5050
-export EXPOSED_PORT=$(bashio::addon.port 5050) || export EXPOSED_PORT=""
+if EXPOSED_PORT_TMP=$(bashio::addon.port 5050 2>/dev/null); then
+    export EXPOSED_PORT="${EXPOSED_PORT_TMP}"
+else
+    export EXPOSED_PORT=""
+    bashio::log.debug "No external port configured (Ingress mode only)"
+fi
 export HASS_PORT=8123
 
 bashio::log.info "Configuration:"
