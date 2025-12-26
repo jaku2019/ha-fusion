@@ -8,169 +8,167 @@
 
 /* Enhanced Button Card with Modern Design System */
 .modern-button-card {
-  /* Use our design system tokens with theme fallbacks */
-  background: var(--theme-button-background-color-off, var(--color-surface-elevated));
-  border: 1px solid var(--color-border-subtle);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-md);
-  position: relative;
-  overflow: hidden;
-  transition: var(--transition-all);
-  
-  /* Modern glassmorphism effect */
-  backdrop-filter: blur(var(--blur-sm));
-  -webkit-backdrop-filter: blur(var(--blur-sm));
-  
-  /* Gradient overlay for depth */
-  background-image: var(--gradient-surface);
+	/* Use our design system tokens with theme fallbacks */
+	background: var(--theme-button-background-color-off, var(--color-surface-elevated));
+	border: 1px solid var(--color-border-subtle);
+	border-radius: var(--radius-xl);
+	box-shadow: var(--shadow-md);
+	position: relative;
+	overflow: hidden;
+	transition: var(--transition-all);
+
+	/* Modern glassmorphism effect */
+	backdrop-filter: blur(var(--blur-sm));
+	-webkit-backdrop-filter: blur(var(--blur-sm));
+
+	/* Gradient overlay for depth */
+	background-image: var(--gradient-surface);
 }
 
 .modern-button-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--gradient-glass);
-  opacity: 0;
-  transition: opacity var(--transition-medium);
-  pointer-events: none;
-  border-radius: inherit;
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: var(--gradient-glass);
+	opacity: 0;
+	transition: opacity var(--transition-medium);
+	pointer-events: none;
+	border-radius: inherit;
 }
 
 .modern-button-card:hover::before {
-  opacity: 1;
+	opacity: 1;
 }
 
 .modern-button-card:hover {
-  box-shadow: var(--shadow-xl);
-  transform: translateY(-2px);
-  border-color: var(--color-border-emphasis);
+	box-shadow: var(--shadow-xl);
+	transform: translateY(-2px);
+	border-color: var(--color-border-emphasis);
 }
 
 /* Enhanced active state */
 .modern-button-card[data-state='true'] {
-  background: var(--theme-button-background-color-on, var(--color-primary));
-  border-color: var(--color-primary);
-  box-shadow: var(--shadow-lg);
+	background: var(--theme-button-background-color-on, var(--color-primary));
+	border-color: var(--color-primary);
+	box-shadow: var(--shadow-lg);
 }
 
 .modern-button-card[data-state='true']::before {
-  background: linear-gradient(145deg, 
-    rgba(255, 255, 255, 0.1) 0%, 
-    rgba(255, 255, 255, 0.05) 100%);
-  opacity: 1;
+	background: linear-gradient(145deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+	opacity: 1;
 }
 
 /* Enhanced icon styling */
 .modern-button-card .icon {
-  background: var(--color-surface-elevated-2);
-  border: 2px solid var(--color-border);
-  box-shadow: var(--shadow-sm);
-  transition: var(--transition-all);
+	background: var(--color-surface-elevated-2);
+	border: 2px solid var(--color-border);
+	box-shadow: var(--shadow-sm);
+	transition: var(--transition-all);
 }
 
 .modern-button-card .icon[data-state='true'] {
-  background: var(--icon-color, var(--color-accent-primary));
-  border-color: var(--color-white);
-  box-shadow: var(--shadow-md);
-  transform: scale(1.05);
+	background: var(--icon-color, var(--color-accent-primary));
+	border-color: var(--color-white);
+	box-shadow: var(--shadow-md);
+	transform: scale(1.05);
 }
 
 /* Enhanced typography */
 .modern-button-card .name {
-  font-weight: var(--font-medium);
-  color: var(--theme-button-name-color-off, var(--color-text-primary));
-  font-size: var(--text-base);
-  line-height: var(--line-height-tight);
+	font-weight: var(--font-medium);
+	color: var(--theme-button-name-color-off, var(--color-text-primary));
+	font-size: var(--text-base);
+	line-height: var(--line-height-tight);
 }
 
 .modern-button-card .state {
-  color: var(--theme-button-state-color-off, var(--color-text-secondary));
-  font-size: var(--text-sm);
-  font-weight: var(--font-normal);
-  line-height: var(--line-height-normal);
+	color: var(--theme-button-state-color-off, var(--color-text-secondary));
+	font-size: var(--text-sm);
+	font-weight: var(--font-normal);
+	line-height: var(--line-height-normal);
 }
 
 .modern-button-card[data-state='true'] .name {
-  color: var(--theme-button-name-color-on, var(--color-white));
+	color: var(--theme-button-name-color-on, var(--color-white));
 }
 
 .modern-button-card[data-state='true'] .state {
-  color: var(--theme-button-state-color-on, var(--color-white));
-  opacity: 0.9;
+	color: var(--theme-button-state-color-on, var(--color-white));
+	opacity: 0.9;
 }
 
 /* Responsive enhancements */
 @media (max-width: 768px) {
-  .modern-button-card {
-    width: calc(50vw - 1.45rem);
-    /* Reduce motion on mobile for better performance */
-    transform: none;
-  }
-  
-  .modern-button-card:hover {
-    transform: none;
-  }
+	.modern-button-card {
+		width: calc(50vw - 1.45rem);
+		/* Reduce motion on mobile for better performance */
+		transform: none;
+	}
+
+	.modern-button-card:hover {
+		transform: none;
+	}
 }
 
 /* Accessibility improvements */
 @media (prefers-reduced-motion: reduce) {
-  .modern-button-card,
-  .modern-button-card::before,
-  .modern-button-card .icon {
-    transition: none;
-    transform: none;
-  }
-  
-  .modern-button-card:hover {
-    transform: none;
-  }
+	.modern-button-card,
+	.modern-button-card::before,
+	.modern-button-card .icon {
+		transition: none;
+		transform: none;
+	}
+
+	.modern-button-card:hover {
+		transform: none;
+	}
 }
 
 /* Dark theme specific enhancements */
 @media (prefers-color-scheme: dark) {
-  .modern-button-card {
-    box-shadow: 
-      var(--shadow-md),
-      0 0 0 1px var(--color-glass-light);
-  }
-  
-  .modern-button-card:hover {
-    box-shadow: 
-      var(--shadow-xl),
-      0 0 0 1px var(--color-glass-medium);
-  }
+	.modern-button-card {
+		box-shadow:
+			var(--shadow-md),
+			0 0 0 1px var(--color-glass-light);
+	}
+
+	.modern-button-card:hover {
+		box-shadow:
+			var(--shadow-xl),
+			0 0 0 1px var(--color-glass-medium);
+	}
 }
 
 /* Loading state enhancement */
 .modern-button-card .loading-overlay {
-  position: absolute;
-  inset: 0;
-  background: var(--color-overlay-light);
-  backdrop-filter: blur(var(--blur-sm));
-  -webkit-backdrop-filter: blur(var(--blur-sm));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: inherit;
-  z-index: 1;
+	position: absolute;
+	inset: 0;
+	background: var(--color-overlay-light);
+	backdrop-filter: blur(var(--blur-sm));
+	-webkit-backdrop-filter: blur(var(--blur-sm));
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: inherit;
+	z-index: 1;
 }
 
 /* Enhanced ripple effect integration */
 .modern-button-card {
-  /* Ensure ripple is contained within rounded corners */
-  transform: translateZ(0);
+	/* Ensure ripple is contained within rounded corners */
+	transform: translateZ(0);
 }
 
 /* Focus states for accessibility */
 .modern-button-card:focus-visible {
-  outline: none;
-  box-shadow: 
-    var(--shadow-lg),
-    0 0 0 3px var(--color-primary-hover);
+	outline: none;
+	box-shadow:
+		var(--shadow-lg),
+		0 0 0 3px var(--color-primary-hover);
 }
 
 .modern-button-card[data-state='true']:focus-visible {
-  box-shadow: 
-    var(--shadow-lg),
-    0 0 0 3px var(--color-white);
+	box-shadow:
+		var(--shadow-lg),
+		0 0 0 3px var(--color-white);
 }

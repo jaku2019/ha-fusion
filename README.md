@@ -13,6 +13,7 @@ This is an enhanced fork of the original [ha-fusion](https://github.com/matt8707
 ### ✨ New Features Added
 
 #### 📊 Graph Component Integration
+
 - **Dashboard Graphs**: Add interactive line charts as main dashboard items
 - **Entity Visualization**: Display sensor history with customizable time ranges (1-168 hours)
 - **Real-time Configuration**: Live color customization with stroke and fill options
@@ -20,18 +21,21 @@ This is an enhanced fork of the original [ha-fusion](https://github.com/matt8707
 - **Smart Sizing**: Automatically spans 2 grid columns for optimal data display
 
 #### 🔄 Enhanced Binary Sensor Component
+
 - **Custom Text Values**: Display meaningful text instead of "On"/"Off" (e.g., "Open"/"Closed", "Detected"/"Clear")
 - **Smart Icon Detection**: Automatic icon suggestions based on entity type (doors, motion, contact sensors)
 - **Flexible Configuration**: Separate icons for on/off states with prefix/suffix text support
 - **Intuitive Setup**: Easy configuration through dedicated modal interface
 
 ### 🛠 Technical Improvements
+
 - **TypeScript Enhancement**: Full type safety for new components
 - **Demo Integration**: Works seamlessly with demo entities for development
 - **Configuration Flow**: Consistent patterns following existing HA-Fusion architecture
 - **Documentation**: Comprehensive implementation guides and usage examples
 
 ### 📚 Documentation
+
 - [Graph and Binary Sensor Implementation Guide](docs/graph-and-binary-sensor-implementation.md)
 - [Modernization Progress](docs/modernization-progress.md)
 - [Recent Implementation Summary](docs/recent-implementation-summary.md)
@@ -78,7 +82,7 @@ Install this enhanced version of ha-fusion via Docker:
        image: ghcr.io/bogdanbotezatu/ha-fusion:latest
        container_name: ha-fusion
        ports:
-         - "5050:5050"
+         - '5050:5050'
        volumes:
          - ./data:/app/data
        environment:
@@ -153,11 +157,11 @@ For the original ha-fusion with add-on support, visit: <https://github.com/matt8
 
 #### Binary Sensor Examples
 
-| Entity Type | On Value | Off Value | Result |
-|-------------|----------|-----------|---------|
-| Door Contact | "Open" | "Closed" | Shows "Open" when door is open |
-| Motion Sensor | "Motion Detected" | "No Motion" | Clear motion status |
-| Occupancy | "Occupied" | "Empty" | Room occupancy status |
+| Entity Type   | On Value          | Off Value   | Result                         |
+| ------------- | ----------------- | ----------- | ------------------------------ |
+| Door Contact  | "Open"            | "Closed"    | Shows "Open" when door is open |
+| Motion Sensor | "Motion Detected" | "No Motion" | Clear motion status            |
+| Occupancy     | "Occupied"        | "Empty"     | Room occupancy status          |
 
 ---
 
@@ -228,16 +232,19 @@ npm run format
 When working with the new features:
 
 #### Graph Component
+
 - Source: `src/lib/Dashboard/Graph.svelte`
 - Config: `src/lib/Modal/DashboardGraphConfig.svelte`
 - Integration: Added to `src/lib/Modal/MainItemConfig.svelte`
 
 #### Binary Sensor Component
+
 - Source: `src/lib/Sidebar/BinarySensor.svelte`
 - Config: `src/lib/Modal/BinarySensorConfig.svelte`
 - Integration: Added to `src/lib/Modal/SidebarItemConfig.svelte`
 
 #### Development Guidelines
+
 - Follow existing TypeScript patterns
 - Maintain consistency with current component architecture
 - Add comprehensive demo entity support
@@ -247,6 +254,7 @@ When working with the new features:
 ### 📖 Documentation
 
 See the [docs](docs/) folder for comprehensive implementation guides:
+
 - [Graph and Binary Sensor Implementation](docs/graph-and-binary-sensor-implementation.md)
 - [Modernization Progress](docs/modernization-progress.md)
 - [Implementation Summary](docs/recent-implementation-summary.md)
@@ -256,6 +264,7 @@ See the [docs](docs/) folder for comprehensive implementation guides:
 ## 🤝 Contributing
 
 This fork welcomes contributions! Please ensure:
+
 - New features follow existing patterns
 - Components include proper TypeScript definitions
 - Demo entities are supported for development

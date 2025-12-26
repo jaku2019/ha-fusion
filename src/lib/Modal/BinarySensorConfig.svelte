@@ -89,7 +89,8 @@
 		if (id.includes('motion') || id.includes('pir')) return 'motion';
 		if (id.includes('contact')) return 'contact';
 		if (id.includes('occupancy')) return 'occupancy';
-		if (id.includes('smoke') || id.includes('fire') || id.includes('gas') || id.includes('water')) return 'safety';
+		if (id.includes('smoke') || id.includes('fire') || id.includes('gas') || id.includes('water'))
+			return 'safety';
 		return 'generic';
 	}
 </script>
@@ -103,12 +104,12 @@
 		<div class="preview">
 			<BinarySensor
 				entity_id={sel?.entity_id}
-				prefix={prefix}
-				suffix={suffix}
-				icon_on={icon_on}
-				icon_off={icon_off}
-				on_value={on_value}
-				off_value={off_value}
+				{prefix}
+				{suffix}
+				{icon_on}
+				{icon_off}
+				{on_value}
+				{off_value}
 			/>
 		</div>
 

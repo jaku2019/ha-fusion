@@ -23,22 +23,22 @@
 	$: isUnavailable = ['unavailable', 'unknown'].includes(state);
 
 	// Determine display text
-	$: displayText = isUnavailable 
-		? $lang(state) 
-		: isOn 
-			? (on_value || $lang('on'))
-			: isOff 
-				? (off_value || $lang('off'))
+	$: displayText = isUnavailable
+		? $lang(state)
+		: isOn
+			? on_value || $lang('on')
+			: isOff
+				? off_value || $lang('off')
 				: state;
 
 	// Determine icon to show
-	$: currentIcon = isOn 
-		? (icon_on || entity?.attributes?.icon || getDefaultIcon(entity_id, true))
-		: (icon_off || entity?.attributes?.icon || getDefaultIcon(entity_id, false));
+	$: currentIcon = isOn
+		? icon_on || entity?.attributes?.icon || getDefaultIcon(entity_id, true)
+		: icon_off || entity?.attributes?.icon || getDefaultIcon(entity_id, false);
 
 	function getDefaultIcon(entityId: string | undefined, isOn: boolean): string {
 		if (!entityId) return 'mdi:help-circle';
-		
+
 		// Door sensors
 		if (entityId.includes('door')) {
 			return isOn ? 'mdi:door-open' : 'mdi:door-closed';
@@ -81,7 +81,7 @@
 					<Icon icon={currentIcon} />
 				</div>
 			{/if}
-			
+
 			<div class="text">
 				{#if isUnavailable}
 					{prefix || ''}{displayText}{suffix || ''}

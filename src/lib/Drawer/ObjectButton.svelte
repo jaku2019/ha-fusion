@@ -10,10 +10,7 @@
 	const dispatch = createEventDispatcher();
 
 	$: noViewsOrSectionsOrStacks =
-		!view ||
-		!view.sections ||
-		view.sections.length === 0 ||
-		!hasValidSection(view.sections);
+		!view || !view.sections || view.sections.length === 0 || !hasValidSection(view.sections);
 
 	function hasValidSection(sections: any[]): boolean {
 		for (const section of sections) {
