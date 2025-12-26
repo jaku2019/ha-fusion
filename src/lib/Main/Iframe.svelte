@@ -28,6 +28,8 @@
 			style:height={size || '300px'}
 			style:pointer-events={$editMode ? 'none' : 'auto'}
 			title={$lang('iframe')}
+			sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
+			loading="lazy"
 		></iframe>
 	{:else}
 		<div class="placeholder" style:height={size || '300px'}>
