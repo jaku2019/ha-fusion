@@ -1,6 +1,6 @@
 <script>
 	import Graph from '$lib/Dashboard/Graph.svelte';
-	
+
 	const componentOptions = [
 		{
 			name: 'Graph',

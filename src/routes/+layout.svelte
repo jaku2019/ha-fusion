@@ -5,7 +5,7 @@
 	import Loader from '$lib/Components/Loader.svelte';
 	import '@fontsource-variable/inter';
 	import { expoOut } from 'svelte/easing';
-	
+
 	// Import modern design system
 	import '$lib/styles/tokens.css';
 	import '$lib/styles/components.css';
@@ -56,7 +56,9 @@
 		color: var(--theme-colors-text, var(--color-text-primary));
 		font-size: var(--font-size-base);
 		/* Smooth transitions for theme changes */
-		transition: background-color var(--transition-medium), color var(--transition-medium);
+		transition:
+			background-color var(--transition-medium),
+			color var(--transition-medium);
 	}
 
 	:global(body) {
@@ -71,11 +73,11 @@
 		background-size: cover;
 		background-repeat: no-repeat;
 		background-attachment: fixed;
-		transition: 
+		transition:
 			background-image var(--transition-fast),
 			background-color var(--transition-medium),
 			color var(--transition-medium);
-		
+
 		/* Modern scrollbar styling */
 		scrollbar-width: thin;
 		scrollbar-color: var(--color-border-strong) transparent;
@@ -119,7 +121,7 @@
 		background-size: cover;
 		background-repeat: no-repeat;
 		background-attachment: fixed;
-		transition: 
+		transition:
 			opacity var(--transition-medium) var(--easing-out),
 			backdrop-filter var(--transition-medium) var(--easing-out);
 	}

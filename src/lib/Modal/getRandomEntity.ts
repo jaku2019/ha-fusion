@@ -164,16 +164,17 @@ export function getCameraEntity(states: HassEntities) {
  */
 export function getBinarySensorEntity(states: HassEntities) {
 	if (states === undefined) return;
-	const filtered = Object.values(states).filter((entity) => 
-		entity.entity_id.startsWith('binary_sensor.') && 
-		!['unavailable', 'unknown'].includes(entity.state)
+	const filtered = Object.values(states).filter(
+		(entity) =>
+			entity.entity_id.startsWith('binary_sensor.') &&
+			!['unavailable', 'unknown'].includes(entity.state)
 	);
 	const entity = random(filtered);
 	if (entity) {
 		return entity.entity_id;
 	} else {
 		// Fallback to any binary sensor if none with valid state
-		const fallback = Object.values(states).filter((entity) => 
+		const fallback = Object.values(states).filter((entity) =>
 			entity.entity_id.startsWith('binary_sensor.')
 		);
 		const fallbackEntity = random(fallback);

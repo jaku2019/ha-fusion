@@ -6,17 +6,20 @@
 	export let strokeWidth: number = 3;
 
 	// Extract temperature range from attributes or use realistic defaults
-	$: minTemp = attributes?.min_temp || 10;  // More realistic minimum
-	$: maxTemp = attributes?.max_temp || 30;  // More realistic maximum
+	$: minTemp = attributes?.min_temp || 10; // More realistic minimum
+	$: maxTemp = attributes?.max_temp || 30; // More realistic maximum
 	$: unit = attributes?.unit_of_measurement || 'C';
 
 	// Calculate circle properties
 	$: radius = (size - strokeWidth) / 2;
 	$: circumference = 2 * Math.PI * radius;
 	$: strokeDasharray = circumference;
-	
+
 	// Calculate temperature as percentage of the range
-	$: tempPercentage = Math.max(0, Math.min(100, ((temperature - minTemp) / (maxTemp - minTemp)) * 100));
+	$: tempPercentage = Math.max(
+		0,
+		Math.min(100, ((temperature - minTemp) / (maxTemp - minTemp)) * 100)
+	);
 	$: strokeDashoffset = circumference - (tempPercentage / 100) * circumference;
 
 	// Color based on temperature range - cooler temps = blue, warmer = red
@@ -57,7 +60,7 @@
 			stroke="rgba(255, 255, 255, 0.3)"
 			stroke-width={strokeWidth}
 		/>
-		
+
 		<!-- Temperature circle -->
 		<circle
 			cx={size / 2}
@@ -73,7 +76,7 @@
 			class="progress-circle"
 		/>
 	</svg>
-	
+
 	<!-- Temperature text -->
 	<div class="temperature-text">
 		{Math.round(temperature)}°
@@ -96,7 +99,9 @@
 	}
 
 	.progress-circle {
-		transition: stroke-dashoffset 0.5s ease, stroke 0.3s ease;
+		transition:
+			stroke-dashoffset 0.5s ease,
+			stroke 0.3s ease;
 	}
 
 	.temperature-text {

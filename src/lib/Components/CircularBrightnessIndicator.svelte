@@ -44,7 +44,7 @@
 		event.stopPropagation();
 		isDragging = true;
 		container.setPointerCapture(event.pointerId);
-		
+
 		const newValue = getValueFromPosition(event.clientX, event.clientY);
 		updateBrightness(newValue);
 	}
@@ -53,7 +53,7 @@
 		if (!isDragging) return;
 		event.preventDefault();
 		event.stopPropagation();
-		
+
 		const newValue = getValueFromPosition(event.clientX, event.clientY);
 		updateBrightness(newValue);
 	}
@@ -65,11 +65,11 @@
 
 	function updateBrightness(newValue: number) {
 		const domain = getDomain(entity_id);
-		
+
 		if (domain === 'light') {
 			// Convert percentage back to Home Assistant brightness (0-255)
 			const brightness = Math.round((newValue / 100) * 255);
-			
+
 			callService($connection, 'light', 'turn_on', {
 				entity_id,
 				brightness
@@ -115,7 +115,7 @@
 			stroke="rgba(0, 0, 0, 0.3)"
 			stroke-width={strokeWidth}
 		/>
-		
+
 		<!-- Progress circle -->
 		<circle
 			cx={size / 2}
@@ -131,7 +131,7 @@
 			class="progress-circle"
 		/>
 	</svg>
-	
+
 	<!-- Percentage text -->
 	<div class="percentage-text">
 		{value}%

@@ -26,7 +26,7 @@
 	let mounted = false;
 	onMount(() => {
 		mounted = true;
-		
+
 		// Handle mobile media query
 		const handleMediaQueryChange = (event: { matches: boolean }) => {
 			isMobile = event.matches;
@@ -37,7 +37,7 @@
 		isMobile = mediaQuery.matches;
 
 		mediaQuery.addEventListener('change', handleMediaQueryChange);
-		
+
 		// cleanup
 		return () => {
 			mediaQuery.removeEventListener('change', handleMediaQueryChange);
@@ -201,7 +201,7 @@
 
 	function itemStyles(type: string, item?: any) {
 		const large = ['conditional_media', 'picture_elements', 'camera'];
-		
+
 		// Handle button layout
 		if (type === 'button' && item?.layout === 'rectangular') {
 			return `
@@ -210,7 +210,7 @@
 				display: ${type ? '' : 'none'};
 			`;
 		}
-		
+
 		// Handle graph and iframe items - make them span 2 columns (but not on mobile)
 		if (type === 'graph' || type === 'iframe') {
 			return `
@@ -219,7 +219,7 @@
 				display: ${type ? '' : 'none'};
 			`;
 		}
-		
+
 		return `
 			grid-column: ${large.includes(type) ? 'span 2' : 'span 1'};
 			grid-row: ${large.includes(type) ? 'span 4' : 'span 1'};

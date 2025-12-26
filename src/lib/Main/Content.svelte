@@ -30,10 +30,7 @@
 {:else if item?.type === 'camera'}
 	<Camera sel={item} responsive={false} muted={true} controls={false} />
 {:else if item?.type === 'graph'}
-	<Graph 
-		sel={item}
-		{sectionName}
-	/>
+	<Graph sel={item} {sectionName} />
 {:else if item?.type === 'iframe'}
 	<Iframe sel={item} />
 {:else if item?.type === 'empty'}
