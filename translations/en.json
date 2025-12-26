@@ -1,0 +1,8 @@
+{
+  "configuration": {
+    "hass_url": {
+      "name": "Home Assistant URL",
+      "description": "The URL to your Home Assistant instance (optional, only needed for external port access)"
+    }
+  }
+}

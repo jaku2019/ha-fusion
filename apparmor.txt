@@ -1,0 +1,64 @@
+#include <tunables/global>
+
+profile ha-fusion flags=(attach_disconnected,mediate_deleted) {
+  #include <abstractions/base>
+
+  # Capabilities
+  capability net_admin,
+  capability net_raw,
+  capability sys_admin,
+  capability sys_rawio,
+  capability dac_override,
+  capability dac_read_search,
+  capability setgid,
+  capability setuid,
+
+  # S6-Overlay
+  /init ix,
+  /bin/** ix,
+  /usr/bin/** ix,
+  /run/{s6,s6-rc*,service}/** ix,
+  /package/** ix,
+  /command/** ix,
+  /etc/services.d/** rwix,
+  /etc/cont-init.d/** rwix,
+  /etc/cont-finish.d/** rwix,
+  /run/{,**} rwk,
+  /dev/tty rw,
+
+  # Bashio
+  /usr/lib/bashio/** ix,
+  /tmp/** rw,
+
+  # Access to options.json and other service configurations
+  /data/** rw,
+
+  # Start HA Fusion
+  /app/** rw,
+  /app/node_modules/** rw,
+
+  # Node.js
+  /usr/bin/node ix,
+  /usr/lib/node_modules/** ix,
+
+  # Suppress ptrace denials
+  ptrace,
+
+  # Access to data folder
+  /data rwk,
+  /share/** rw,
+  /ssl/** rw,
+
+  # Access to Home Assistant API
+  network tcp,
+  network udp,
+  network inet stream,
+  network inet6 stream,
+
+  # Host access
+  /run/dbus/system_bus_socket rw,
+  /sys/devices/** r,
+  /proc/*/net/** r,
+  /proc/*/stat r,
+  /proc/sys/kernel/random/uuid r,
+}

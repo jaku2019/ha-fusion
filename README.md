@@ -61,25 +61,35 @@ The current state of this project is **pre-beta**. This means that there's basic
 
 ### 🔧 Enhanced Fork Installation
 
-This enhanced fork can be installed using Docker. The original add-on installation method is not available for this fork.
+This enhanced fork supports both Home Assistant Add-on and Docker installation methods.
 
-### Quick install
+### Home Assistant Add-on (Recommended)
 
-Click and run a prebuilt version of the dashboard:
+The easiest way to install HA Fusion is as a Home Assistant add-on:
 
-[![Open your Home Assistant instance and show the add add-on repository dialog with a specific repository URL pre-filled.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fbogdanbotezatu%2Faddon-ha-fusion)
+1. **Add Repository**: Click the button below or manually add this repository to your Home Assistant:
 
-### Docker
+   [![Open your Home Assistant instance and show the add add-on repository dialog with a specific repository URL pre-filled.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fjaku2019%2Fha-fusion)
 
-Install this enhanced version of ha-fusion via Docker:
+   Or manually add: `https://github.com/jaku2019/ha-fusion`
 
-1. **Docker Compose File**: Create a docker-compose.yml file using this enhanced version:
+2. **Install**: Find "HA Fusion" in the add-on store and click **Install**
+
+3. **Start**: Click **Start** and access via the sidebar or **Open Web UI**
+
+The add-on uses Ingress by default for seamless integration. See [DOCS.md](DOCS.md) for configuration options.
+
+### Docker (Alternative)
+
+Install this enhanced version of ha-fusion via Docker if you prefer not to use the add-on:
+
+1. **Docker Compose File**: Create a docker-compose.yml file:
 
    ```yaml
    version: '3.8'
    services:
      ha-fusion:
-       image: ghcr.io/bogdanbotezatu/ha-fusion:latest
+       image: ghcr.io/jaku2019/ha-fusion:latest
        container_name: ha-fusion
        ports:
          - '5050:5050'
@@ -121,12 +131,8 @@ docker run -d \
   -e TZ=Europe/Stockholm \
   -e HASS_URL=http://192.168.1.241:8123 \
   --restart always \
-  ghcr.io/bogdanbotezatu/ha-fusion:latest
+  ghcr.io/jaku2019/ha-fusion:latest
 ```
-
-### 📦 Original Installation
-
-For the original ha-fusion with add-on support, visit: <https://github.com/matt8707/ha-fusion>
 
 ---
 

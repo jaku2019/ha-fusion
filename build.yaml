@@ -1,0 +1,13 @@
+build_from:
+  amd64: ghcr.io/home-assistant/amd64-base:3.20
+  armv7: ghcr.io/home-assistant/armv7-base:3.20
+  aarch64: ghcr.io/home-assistant/aarch64-base:3.20
+  armhf: ghcr.io/home-assistant/armhf-base:3.20
+  i386: ghcr.io/home-assistant/i386-base:3.20
+args:
+  BASHIO_VERSION: 0.16.2
+labels:
+  org.opencontainers.image.title: "HA Fusion"
+  org.opencontainers.image.description: "A modern, easy-to-use and performant custom Home Assistant dashboard"
+  org.opencontainers.image.source: "https://github.com/jaku2019/ha-fusion"
+  org.opencontainers.image.licenses: "MIT"
