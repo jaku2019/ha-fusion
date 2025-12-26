@@ -7,11 +7,12 @@
 	import Configure from '$lib/Main/Configure.svelte';
 	import Empty from '$lib/Main/Empty.svelte';
 	import Graph from '$lib/Dashboard/Graph.svelte';
+	import Iframe from '$lib/Main/Iframe.svelte';
 
 	export let item: any;
 	export let sectionName: string | undefined = undefined;
 
-	const large = ['conditional_media', 'picture_elements', 'camera'];
+	const large = ['conditional_media', 'picture_elements', 'camera', 'iframe'];
 </script>
 
 {#if item?.[SHADOW_ITEM_MARKER_PROPERTY_NAME] && large.includes(item?.type)}
@@ -33,6 +34,8 @@
 		sel={item}
 		{sectionName}
 	/>
+{:else if item?.type === 'iframe'}
+	<Iframe sel={item} />
 {:else if item?.type === 'empty'}
 	<Empty sel={item} />
 {:else}

@@ -211,8 +211,8 @@
 			`;
 		}
 		
-		// Handle graph items - make them span 2 columns like rectangular buttons (but not on mobile)
-		if (type === 'graph') {
+		// Handle graph and iframe items - make them span 2 columns (but not on mobile)
+		if (type === 'graph' || type === 'iframe') {
 			return `
 				grid-column: ${isMobile ? 'span 1' : 'span 2'};
 				grid-row: span 1;

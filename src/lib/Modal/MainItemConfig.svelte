@@ -22,6 +22,7 @@
 	import Ripple from 'svelte-ripple';
 	import PictureElements from '$lib/Main/PictureElements.svelte';
 	import Graph from '$lib/Dashboard/Graph.svelte';
+	import Iframe from '$lib/Main/Iframe.svelte';
 
 	export let isOpen: boolean;
 	export let sel: any;
@@ -138,6 +139,14 @@
 			}
 		},
 		{
+			id: 'iframe',
+			type: $lang('iframe'),
+			component: Iframe,
+			props: {
+				sel
+			}
+		},
+		{
 			id: 'conditional_media',
 			type: `${$lang('conditional')} ${$lang('media')?.toLocaleLowerCase()}`,
 			component: ConditionalMedia,
@@ -192,6 +201,10 @@
 
 				break;
 			}
+
+			case 'iframe':
+				openModal(() => import('$lib/Modal/MainIframeConfig.svelte'), { sel });
+				break;
 
 			case 'empty':
 				openModal(() => import('$lib/Modal/EmptyConfig.svelte'), { sel });
