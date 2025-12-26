@@ -1,0 +1,28 @@
+name: HA Fusion
+version: "2024.10.0"
+slug: ha-fusion
+description: A modern, easy-to-use and performant custom Home Assistant dashboard
+url: https://github.com/jaku2019/ha-fusion
+arch:
+  - amd64
+  - armv7
+  - aarch64
+  - armhf
+  - i386
+startup: application
+boot: auto
+init: false
+hassio_api: true
+homeassistant_api: true
+ingress: true
+ingress_port: 5050
+panel_icon: mdi:view-dashboard
+panel_title: HA Fusion
+options:
+  hass_url: ""
+schema:
+  hass_url: str?
+ports:
+  5050/tcp: null
+ports_description:
+  5050/tcp: Web interface (Not required for Ingress)
