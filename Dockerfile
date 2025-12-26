@@ -57,5 +57,5 @@ ENV PORT=5050 \
 
 EXPOSE 5050
 
-# Use run.sh if it exists (Home Assistant add-on), otherwise use node directly
-CMD [ "/run.sh" ]
+# Use run.sh for Home Assistant add-on, node directly for standalone
+CMD [ "sh", "-c", "if [ -f /usr/bin/bashio ]; then /run.sh; else node server.js; fi" ]
